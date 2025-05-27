@@ -1,18 +1,45 @@
+/* BACKGROUND */
 .background {
   position: fixed;
   top: 0;
   left: 0;
-  background-size: cover;
-  background-position: center;
+  width: 100%;
+  height: 100%;
   z-index: -1;
+  overflow: hidden;
 }
 
+.background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Overlay with gradient */
+.background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300px; /* Adjust height as needed */
+  background: linear-gradient(to bottom, rgba(0, 128, 0, 0.6), transparent);
+  z-index: 1;
+}
+
+/* HEADER SECTION */
 .section-header {
   display: flex;
-  padding-top: 10px;
   justify-content: space-evenly;
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
+/* HEADER SECTION - LEFT */
 .section-header .header-left .logo {
   display: flex;
   align-items: center;
@@ -25,6 +52,19 @@
   text-decoration: none;
 }
 
+.section-header .header-left .logo .short-text {
+  color: var(--color-text-secondary);
+  font-size: 0.7rem;
+  text-decoration: none;
+  display: none;
+}
+
+.section-header .header-left .logo .logo-text,
+.section-header .header-left .logo .short-text {
+  line-height: 1;
+}
+
+/* HEADER SECTION - RIGHT */
 .section-header .header-right {
   display: flex;
   align-items: center;
@@ -38,26 +78,50 @@
   margin: 0;
 }
 
-.section-header .header-right ul li a:hover {
-  color: var(--color-button-hover);
-  border-radius: 5px;
-  border-bottom: 2px solid black;
-  transition: border-bottom 0.3s ease-in-out;
-}
-
 .section-header .header-right ul li a {
   text-decoration: none;
-  color: var(--color-text-secondary);
   margin: 10px 20px;
   font-weight: 500;
+  color: #fff;
+  position: relative;
+  transition: color 0.3s ease;
 }
 
+.section-header .header-right ul li a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background-color: var(--color-texthover);
+  transition: width 0.3s ease;
+}
+
+.section-header .header-right ul li a:hover {
+  color: var(--color-texthover);
+}
+
+.section-header .header-right ul li a:hover::after {
+  width: 100%;
+}
+
+/* SIGN IN SECTION */
 .section-signin {
-  width: 300px;
-  background-color: var(--color-background);
+  width: 100%;
+  height: calc(100vh - 60px); /* Adjust this height based on your header */
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 60px; /* same value as subtracted height */
+}
+
+.section-signin .form-signin {
+  width: 400px;
+  padding: 20px;
+  background-color: rgba(252, 252, 252, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .section-signin .form-header {
@@ -65,12 +129,181 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.section-signin .form-header .form-header-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.form-body {
+  padding: 15px;
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  padding: 8px 13px;
   margin-bottom: 20px;
+  transition: all 0.3s ease;
+  border: 1px solid #7c7c7c;
+}
+
+.form-group:focus-within {
+  border-color: var(--color-primary);
+}
+
+.form-group i {
+  color: #aaa;
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+.form-group input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #000;
+  font-size: 16px;
+  padding: 5px 0;
+}
+
+#buttonSignIn {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--color-primary);
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#buttonSignIn:hover {
+  background-color: #00e0a0;
+}
+
+.form-body .form-check {
+  margin-top: 5px;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.form-body a {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.form-body a:hover {
+  color: var(--color-texthover);
+  transition: color 0.3s ease;
+}
+
+.form-body .form-check input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.form-body .form-footer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-body .form-footer p {
+  color: #000;
+}
+
+.form-body .form-footer .divider {
+  width: 90%;
+  height: 1px;
+  background-color: #bdbdbd;
+  margin: 10px 0 20px 0;
+}
+
+.section-footer {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.section-footer .footer-links {
+}
+
+.section-footer .footer-links a {
+  color: var(--color-text);
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 0.8rem;
+}
+
+.section-footer .footer-links a:hover {
+  color: var(--color-primary);
+  transition: color 0.3s ease;
+}
+
+.section-footer .footer-links .programmer-name {
+  color: var(--color-text);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.section-footer .footer-links .programmer-name:hover {
+  color: var(--color-primary);
+  transition: color 0.3s ease;
 }
 
 /* Small Screen */
-@media (max-width: 768px) {
+@media (max-width: 990px) {
+  /* BACKGROUND */
   .background {
     height: 100vh;
+  }
+
+  .section-header {
+    top: 10px; /* Adjust header position for small screens */
+  }
+
+  .section-header .header-left .logo .logo-text {
+    display: none; /* Hide logo text on small screens */
+  }
+
+  .section-header .header-left .logo .short-text {
+    display: block; /* Show short text on small screens */
+  }
+
+  .section-header .header-right {
+    display: none; /* Hide header-right on small screens */
+  }
+
+  .section-signin {
+    height: calc(100vh - 180px); /* Adjust height for small screens */
+  }
+
+  .section-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .section-signin .form-signin {
+    margin: 20px;
+    padding: 10px;
   }
 }

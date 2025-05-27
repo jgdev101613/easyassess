@@ -11,6 +11,10 @@ require_once "includes/session/config.session.inc.php";
     <link rel="stylesheet" href="public/css/main.css" />
     <link rel="stylesheet" href="public/css/loading.css" />
     <link rel="stylesheet" href="public/css/login.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
     <title>SACLI - Easy Assess</title>
   </head>
   <body>
@@ -38,13 +42,17 @@ require_once "includes/session/config.session.inc.php";
             <img src="assets/saclilogo.png" alt="Sacli Logo" height="64">
             <div class="logo-text">
               <h2>Saint Anne College Lucena INC.</h2>
-              <p>Class Beyong Quezon</p>
+              <p>Class Beyond Quezon</p>
+            </div>
+            <div class="short-text">
+              <h2>Saint Anne College Lucena INC.</h2>
+              <p>Class Beyond Quezon</p>
             </div>
           </div>
         </div>
         <div class="header-right">
           <ul>
-            <li><a href="https://sacli.edu.ph/" target="_blank">Home</a></li>
+            <li><a href="https://sacli.edu.ph/" target="_blank">Official Website</a></li>
             <li><a href="https://portal.sacli.edu.ph/?admission=1" target="_blank">Admission</a></li>
             <li><a href="https://sacli.edu.ph/sacliportal" target="_blank">Student Portal</a></li>
             <li><a href="https://sacli.edu.ph/contact-us/" target="_blank">Contact Us</a></li>
@@ -57,20 +65,41 @@ require_once "includes/session/config.session.inc.php";
           <div class="form-header">
             <img src="assets/saclilogo.png" alt="" height="80">
             <div class="form-header-text">
-              <h2>Sign In</h2>
-              <p>Welcome to SACLI Easy Assess</p>
+              <h2>Welcome to SACLI Easy Assess</h2>
+              <p>Sign in to your account</p>
+              
+              <div class="error-message" id="errorMessage"></div>
             </div>
           </div>
-          <div class="form-group">
-            <label for="SIStudentID">Student ID</label>
-            <input type="text" id="SIStudentID" name="SIStudentID" required />
+          <div class="form-body">
+            <div class="form-group" id="StudentIDGroup">
+              <!-- <label for="SIStudentID">Student ID</label> -->
+              <i class="fas fa-user"></i>
+              <input type="text" id="SIStudentID" name="SIStudentID" placeholder="Student ID" required />
+            </div>
+            <div class="form-group" id="StudentPasswordGroup" >
+              <!-- <label for="SIStudentPassword">Password</label> -->
+              <i class="fas fa-lock"></i>
+              <input type="password" id="SIStudentPassword" name="SIStudentPassword" placeholder="Password" required >
+              <i class="fas fa-eye-slash toggle-password" id="togglePassword" style="cursor: pointer;"></i>
+              </input>
+            </div>
+            <button id="buttonSignIn" type="button">Sign In</button>
+            <div class="form-check">
+              <div class="checkbox-container">
+                <input type="checkbox" id="rememberMe" name="rememberMe" />
+                <label for="rememberMe">Remember Me</label>
+              </div>
+              <p><a href="https://sacli.edu.ph/sacliportal" target="_blank">Forgot Password?</a></p>
+            </div>
+            <div class="form-footer">
+              <div class="divider"></div>
+              <p>Don't have an account? <a href="https://sacli.edu.ph/sacliportal" target="_blank">Sign Up</a></p>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="SIStudentPassword">Password</label>
-            <input type="password" id="SIStudentPassword" name="SIStudentPassword" required />
-          </div>
-          <button id="buttonSignIn" type="button">Sign In</button>
         </form>
+
+        
       </div>
 
       <!-- Sign Up Section -->
@@ -107,17 +136,25 @@ require_once "includes/session/config.session.inc.php";
           <button id="buttonSignUp" type="button">Sign Up</button>
         </form>
       </div> -->
-
-      <!-- Error Message -->
-      <div class="error-message" id="errorMessage"></div>
-    </div>
-    
-
+      <div class="section-footer">
+        <div class="footer-links">
+          <a href="https://sacli.edu.ph/privacy-policy/" target="_blank">Privacy Policy</a>
+          <span>|</span>
+          <a href="https://sacli.edu.ph/terms-of-use/" target="_blank">Terms of Use</a>
+          <span>|</span>
+          <a href="https://sacli.edu.ph/sitemap/" target="_blank">Sitemap</a>
+          <p>Design and Developed by <a class="programmer-name" href="https://www.facebook.com/sampalokin219" target="_blank">Jovan</a></p>
+        </div>
+      </div>
+    </div> 
     <!-- JQUERY VENDOR -->
     <script src="public/vendor/jquery/jquery.min.js"></script>
     <!-- For Sign In & Sign Up AJAX -->
     <script src="public/js/signin.js"></script>
     <script src="public/js/signup.js"></script>
     <script src="public/js/signout.js"></script>
+    <script src="public/js/main.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   </body>
 </html>

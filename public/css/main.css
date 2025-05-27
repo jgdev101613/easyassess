@@ -4,6 +4,7 @@
 :root {
   --color-primary: #3fae60; /* Primary color */
   --color-secondary: #216734; /* Secondary color */
+  --color-texthover: #f3c911; /* Text hover color */
   --color-button: #a48c20; /* Button color */
   --color-button-hover: #6fbe45; /* Button hover color */
   --color-text: #333; /* Text color */
@@ -18,14 +19,28 @@
   padding: 0;
   box-sizing: border-box;
   font-family: var(--font-family);
+  text-decoration: none;
+  /* FOR FIREFOX SCROLL BAR */
+}
+
+::-webkit-scrollbar {
+  width: 6px; /* Make it thin */
+  height: 6px; /* If horizontal scrollbar appears */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Optional: transparent or light background */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary); /* Your green scrollbar */
+  border-radius: 20px; /* Smooth rounded edges */
 }
 
 /* ERROR MESSAGE STYLE */
 .error-message {
-  width: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: red;
   font-size: 0.9rem;
+  margin: 5px 0;
+  text-align: center;
 }

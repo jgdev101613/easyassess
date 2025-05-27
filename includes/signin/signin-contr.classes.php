@@ -29,7 +29,7 @@ class SignInController extends SignIn {
     $result = null;
 
     if (empty($this->studentID) || empty($this->studentPassword)) {
-      $message = '<div>Fields Cannot Be Empty!</div>';
+      $message = 'Fields Cannot Be Empty!';
       $result = ['status' => 'error', 'message' => $message];
     } 
 
