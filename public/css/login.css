@@ -1,0 +1,76 @@
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+.section-header {
+  display: flex;
+  padding-top: 10px;
+  justify-content: space-evenly;
+}
+
+.section-header .header-left .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.section-header .header-left .logo .logo-text {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.section-header .header-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-header .header-right ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.section-header .header-right ul li a:hover {
+  color: var(--color-button-hover);
+  border-radius: 5px;
+  border-bottom: 2px solid black;
+  transition: border-bottom 0.3s ease-in-out;
+}
+
+.section-header .header-right ul li a {
+  text-decoration: none;
+  color: var(--color-text-secondary);
+  margin: 10px 20px;
+  font-weight: 500;
+}
+
+.section-signin {
+  width: 300px;
+  background-color: var(--color-background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.section-signin .form-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Small Screen */
+@media (max-width: 768px) {
+  .background {
+    height: 100vh;
+  }
+}
