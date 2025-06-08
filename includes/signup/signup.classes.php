@@ -13,42 +13,39 @@ class SignUp {
       $this->db = $db;
   }
 
-  public function createUser($studentId, $studentFirstName, $studentMiddelName, $studentLastName, $studentEmail, $studentPassword, $studentRePassword) {
+  public function createUser($userId, $email, $password) {
     try {
-      // Concatenate and capitalize the full name
-      $fullName = ucwords(strtolower(trim($studentFirstName . ' ' . $studentMiddelName . ' ' . $studentLastName)));
       $options = [
         'cost' => 12,
       ];
 
       $stmt = $this->db->prepare('
-        INSERT INTO students (student_id, student_name, student_password, student_email) 
-        VALUES (:studentId, :studentName, :studentPassword, :studentEmail);
+        INSERT INTO users (id, email, passowrd) 
+        VALUES (:id, :email, :password);
       ');
 
       $stmt->execute([
-        'studentId' => $studentId,
-        'studentName' => $fullName,
-        'studentEmail' => $studentEmail,
-        'studentPassword' => password_hash($studentPassword, PASSWORD_BCRYPT, $options), // More Secured Hashing
+        'id' => $userId,
+        'email' => $email,
+        'studentPassword' => password_hash($password, PASSWORD_BCRYPT, $options), // More Secured Hashing
       ]);
 
       $stmt = null; // Close the statement
       return ['status' => 'success', 'message' => 'Account Created Successfully!'];
     } catch (PDOException $th) {
-      $message = '<div>Database error: ' . $th->getMessage() . '</div>';
+      $message = 'Database error: ' . $th->getMessage();
       return ['status' => 'error', 'message' => $message];
     }
 
   }
 
-  public function checkUser($studentId, $studentEmail) {
+  public function checkDuplicate($userId, $email) {
     $result;
     try {
-      $stmt = $this->db->prepare('SELECT student_id FROM students WHERE student_id = :studentId OR student_email = :studentEmail;');
+      $stmt = $this->db->prepare('SELECT id FROM students WHERE id = :id OR email = :email;');
       $stmt->execute([
-        'studentId' => $studentId,
-        'studentEmail' => $studentEmail
+        'id' => $userId,
+        'email' => $email
       ]);
 
       if ($stmt->rowCount() > 0) {
@@ -61,7 +58,7 @@ class SignUp {
       return $result;
 
     } catch (PDOException $e) {
-      $message = '<div>Database error: ' . $e->getMessage() . '</div>';
+      $message = 'Database error: ' . $e->getMessage();
       return ['status' => 'error', 'message' => $message];
     }
   }

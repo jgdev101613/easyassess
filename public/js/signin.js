@@ -51,22 +51,6 @@ function signin() {
 
       //$("#errorMessage").html(message).fadeIn();
 
-      Toastify({
-        text: message,
-        duration: 2000,
-        destination: "https://github.com/apvarun/toastify-js",
-        newWindow: true,
-        close: false,
-        gravity: "bottom", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        stopOnFocus: true, // Prevents dismissing of toast on hover
-        style: {
-          background: "#3fae60",
-          borderRadius: "20px",
-        },
-        onClick: function () {}, // Callback after click
-      }).showToast();
-
       setTimeout(function () {
         $("#errorMessage").fadeOut();
       }, 3000);
@@ -77,6 +61,24 @@ function signin() {
     complete: function () {
       // Hide the loading message once the request is complete
       $("#loadingMessage").fadeOut();
+
+      setTimeout(function () {
+        Toastify({
+          text: message,
+          duration: 2000,
+          destination: "https://github.com/apvarun/toastify-js",
+          newWindow: true,
+          close: false,
+          gravity: "bottom", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: "#3fae60",
+            borderRadius: "20px",
+          },
+          onClick: function () {}, // Callback after click
+        }).showToast();
+      }, 500);
 
       // Remove the value of the input fields
       $("#SIStudentID").val("");

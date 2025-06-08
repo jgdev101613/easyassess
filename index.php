@@ -80,9 +80,8 @@ require_once "includes/session/config.session.inc.php";
             <div class="form-group" id="StudentPasswordGroup" >
               <!-- <label for="SIStudentPassword">Password</label> -->
               <i class="fas fa-lock"></i>
-              <input type="password" id="SIStudentPassword" name="SIStudentPassword" placeholder="Password" required >
+              <input type="password" id="SIStudentPassword" name="SIStudentPassword" placeholder="Password" required />
               <i class="fas fa-eye-slash toggle-password" id="togglePassword" style="cursor: pointer;"></i>
-              </input>
             </div>
             <button id="buttonSignIn" type="button">Sign In</button>
             <div class="form-check">
