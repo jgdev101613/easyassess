@@ -1,0 +1,105 @@
+<?php 
+
+declare(strict_types=1);
+
+require_once "../model/User.php";
+
+class SignUpController extends User {
+  private $userId;
+  private $user_type;
+  private $email;
+  private $password;
+  private $repassword;
+  private $profile_image;
+
+  public function __construct($db, $userId, $user_type, $email, $password, $repassword, $profile_image) {
+    parent::__construct($db);
+    $this->userId = $userId;
+    $this->user_type = $user_type;
+    $this->email = $email;
+    $this->password = $password;
+    $this->repassword = $repassword;
+    $this->profile_image = $profile_image;
+  }
+
+  public function signupUser() {
+    if ($this->invalidUserId() !== null) {
+      return $this->invalidStudentID();
+    } elseif ($this->invalidEmail() !== null) {
+      return $this->invalidEmail();
+    } elseif ($this->passwordMatch() !== null) {
+      return $this->passwordMatch();
+    } elseif ($this->userIdTaken() !== null) {
+      return $this->userIdTaken();
+    } else {
+
+    $response = $this->createUser(
+        $this->userId, 
+        $this->user_type,
+        $this->email,
+        $this->password,
+        $this->profile_image
+      );
+
+      return $response;
+    }
+  }
+
+  /*
+  private function emptyInput() {
+    $result = null;
+
+    if (empty($this->studentID) || empty($this->studentFirstName) || empty($this->studentLastName) || empty($this->studentEmail) || empty($this->studentPassword) || empty($this->studentRePassword)) {
+      $message = '<div>Fields Cannot Be Empty!</div>';
+      $result = ['status' => 'error', 'message' => $message];
+    } 
+
+    return $result;
+  }
+
+  private function invalidUserId() {
+    $result = null;
+
+    if (!preg_match('/^[0-9-]+$/', $this->studentID)) {
+      $message = '<div>Invalid Student ID!</div>';
+      $result = ['status' => 'error', 'message' => $message];
+    } 
+
+    return $result;
+  }
+  */
+
+  private function invalidEmail() {
+    $result = null;
+
+    if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+      $message = 'Invalid Email!';
+      $result = ['status' => 'error', 'message' => $message];
+    } 
+
+    return $result;
+  }
+
+  private function passwordMatch() {
+    $result = null;
+
+    if ($this->password !== $this->repassword) {
+      $message = 'Passwords Do Not Match!';
+      $result = ['status' => 'error', 'message' => $message];
+    } 
+
+    return $result;
+  }
+
+  private function userIdTaken() {
+    $result = null;
+
+    if($this->checkDuplicate($this->userId, $this->email)) {
+        $message = 'Student ID or Email already exists!';
+        $result = ['status' => 'error', 'message' => $message];
+    } 
+
+    return $result;
+  }
+
+}

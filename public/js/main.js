@@ -1,25 +1,4 @@
-$(function () {
-  // Listen to register button
-  $("#togglePassword").on("click", function () {
-    togglePasswordVisibility();
-  });
-});
-
-function togglePasswordVisibility() {
-  // Log when the function is called
-  console.log("Toggle Password Visibility function called");
-  const passwordInput = document.getElementById("SIStudentPassword");
-  const toggleIcon = document.getElementById("togglePassword");
-
-  // Toggle the type attribute
-  const type =
-    passwordInput.getAttribute("type") === "password" ? "text" : "password";
-  passwordInput.setAttribute("type", type);
-
-  // Toggle the eye / eye-slash icon
-  toggleIcon.classList.toggle("fa-eye-slash");
-  toggleIcon.classList.toggle("fa-eye");
-}
+$(function () {});
 
 // Just a sample notification function
 function notifyMe() {

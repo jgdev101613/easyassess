@@ -11,32 +11,6 @@ class User {
       $this->db = $db;
   }
 
-  public function createUser($userId, $email, $password) {
-    try {
-      $options = [
-        'cost' => 12,
-      ];
-
-      $stmt = $this->db->prepare('
-        INSERT INTO users (id, email, passowrd) 
-        VALUES (:id, :email, :password);
-      ');
-
-      $stmt->execute([
-        'id' => $userId,
-        'email' => $email,
-        'studentPassword' => password_hash($password, PASSWORD_BCRYPT, $options), // More Secured Hashing
-      ]);
-
-      $stmt = null; // Close the statement
-      return ['status' => 'success', 'message' => 'Account Created Successfully!'];
-    } catch (PDOException $th) {
-      $message = 'Database error: ' . $th->getMessage();
-      return ['status' => 'error', 'message' => $message];
-    }
-
-  }
-
   public function checkDuplicate($userId, $email) {
     $result;
     try {
@@ -61,23 +35,53 @@ class User {
     }
   }
 
-  public function getUser($user_id, $password) {
+  public function createUser(
+      $userId, 
+      $user_type,
+      $email,
+      $password,
+      $profile_image
+    ) {
     try {
       $options = [
         'cost' => 12,
       ];
 
       $stmt = $this->db->prepare('
-        SELECT password FROM users WHERE user_id = :user_id;
+        INSERT INTO users (id, user_type, password, profile_image) 
+        VALUES (:id, :user_type, :password, :profile_image);
       ');
 
       $stmt->execute([
-        'user_id' => $user_id,
+        'id' => $userId,
+        'user_type' => $user_type,
+        'email' => $email,
+        'studentPassword' => password_hash($password, PASSWORD_BCRYPT, $options),
+        'profile_image' => $profile_image 
+      ]);
+
+      $stmt = null; // Close the statement
+      return ['status' => 'success', 'message' => 'Account Created Successfully!'];
+    } catch (PDOException $th) {
+      $message = 'Database error: ' . $th->getMessage();
+      return ['status' => 'error', 'message' => $message];
+    }
+
+  }
+
+  public function getUser($user_id, $password) {
+    try {
+      $stmt = $this->db->prepare('
+        SELECT password FROM users WHERE id = :id;
+      ');
+
+      $stmt->execute([
+        'id' => $user_id,
       ]);
 
       if ($stmt->rowCount() > 0) {
-        $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if (password_verify($password, $row[0]['password'])) {
+        $row = $stmt->fetchAll(PDO::FETCH_ASSOC );
+        if (password_verify($password, $row['password'])) {
           // Set the account details in the session
           $this->getAccountDetails($user_id);
 
@@ -130,7 +134,7 @@ class User {
 
       $_SESSION['user'] = [
           'id' => $fullUser['id'],
-          'profile_photo' => $fullUser['student_photo'] ?? $fullUser['professor_photo'] ?? null,
+          'profile_photo' => $fullUser['profile_image'] ?? null,
           'rfid_code' => $fullUser['rfid_code'] ?? null,
           'user_type' => $fullUser['user_type'],
           'is_logged_in' => true,

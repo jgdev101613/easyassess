@@ -5,22 +5,24 @@ declare(strict_types=1);
 require_once 'signup.classes.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registerStudentID'])) {
   
-  // Grabbing data from the form
-  $studentID = $_POST["registerStudentID"];
+  // User Auth
+  $userId = $_POST["registerStudentID"];
+  $email = $_POST["regsterStudentEmail"];
+  $password = $_POST["registerStudentPassword"];
+  $repassword = $_POST["registerStudentRePassword"];
+
+  // User Details
   $studentFirstName = $_POST["registerStudentFirstName"];
   $studentMiddleName = $_POST["registerStudentMiddleName"];
   $studentLastName = $_POST["registerStudentLastName"];
-  $studentEmail = $_POST["regsterStudentEmail"];
-  $studentPassword = $_POST["registerStudentPassword"];
-  $studentRePassword = $_POST["registerStudentRePassword"];
 
   // Initialize your database connection
   $db = $conn; 
 
   // Instantiate signup controller
   include_once "../database/dbh.inc.php";
-  include_once "signup-contr.classes.php";
-  $signup = new SignUpController($db, $studentID, $studentFirstName, $studentMiddleName, $studentLastName, $studentEmail, $studentPassword, $studentRePassword);
+  include_once "../controller/SignUpController.php";
+  $signup = new SignUpController($db, $userId, $user_type, $email, $password, $repassword, $profile_image);
   $response = $signup->signupUser();
 
   // Running Error handling

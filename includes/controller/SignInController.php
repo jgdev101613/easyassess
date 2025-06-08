@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-class SignInController extends SignIn {
+require_once "../model/User.php";
+
+class SignInController extends User {
   private $studentID;
   private $studentRePassword;
 

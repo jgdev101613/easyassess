@@ -107,7 +107,8 @@
 }
 
 /* SIGN IN SECTION */
-.section-signin {
+.section-signin,
+.section-signup {
   width: 100%;
   height: calc(100vh - 60px); /* Adjust this height based on your header */
   display: flex;
@@ -116,7 +117,8 @@
   margin-top: 60px; /* same value as subtracted height */
 }
 
-.section-signin .form-signin {
+.section-signin .form-signin,
+.section-signup .form-signup {
   width: 400px;
   padding: 20px;
   background-color: rgba(252, 252, 252, 0.8);
@@ -124,14 +126,21 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-.section-signin .form-header {
+.section-signup .form-signup {
+  width: 800px;
+  padding-bottom: 40px;
+}
+
+.section-signin .form-header,
+.section-signup .form-header {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.section-signin .form-header .form-header-text {
+.section-signin .form-header .form-header-text,
+.section-signup .form-header .form-header-text {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--color-text);
@@ -144,6 +153,24 @@
   font-family: "Segoe UI", sans-serif;
 }
 
+.form-body-signup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15px 40px 0 40px;
+}
+
+.form-body-signup .signup-top {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.form-body-signup .signup-right,
+.form-body-signup .signup-left {
+  width: 100%;
+}
+
 .form-group {
   display: flex;
   align-items: center;
@@ -154,6 +181,7 @@
   margin-bottom: 20px;
   transition: all 0.3s ease;
   border: 1px solid #7c7c7c;
+  overflow: hidden;
 }
 
 .form-group:focus-within {
@@ -182,7 +210,7 @@
   right: 10px;
 }
 
-#buttonSignIn {
+.primary-button {
   width: 100%;
   padding: 12px;
   background-color: var(--color-primary);
@@ -195,8 +223,12 @@
   transition: background-color 0.3s ease;
 }
 
-#buttonSignIn:hover {
+.primary-button:hover {
   background-color: #00e0a0;
+}
+
+.signup-button {
+  background-color: var(--color-button-hover);
 }
 
 .form-body .form-check {
@@ -247,9 +279,41 @@
   margin: 10px 0 20px 0;
 }
 
+.file-upload-wrapper {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.custom-file-upload {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 5px 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-file-upload:hover {
+  background-color: var(--color-secondary);
+}
+
+#fileName {
+  font-size: 0.9rem;
+  color: #555;
+}
+
 /* FOOTER */
 
 .section-footer {
+  display: none;
   width: 100%;
   padding: 10px;
   text-align: center;
@@ -286,6 +350,7 @@
 @media (max-width: 990px) {
   /* BACKGROUND */
   .background {
+    height: 100vh;
   }
 
   .section-header {
@@ -315,8 +380,19 @@
     background-color: rgba(255, 255, 255, 0.7);
   }
 
-  .section-signin .form-signin {
+  .section-signin,
+  .section-signup {
+    margin-bottom: 50px;
+  }
+
+  .section-signin .form-signin,
+  .section-signup .form-signup {
     width: 350px;
-    padding: 10px;
+    padding: 10px 10px 40px 10px;
+  }
+
+  .form-body-signup .signup-top {
+    flex-direction: column;
+    gap: 0;
   }
 }
