@@ -15,7 +15,10 @@ function register() {
   var registerPassword = $("#SUPassword").val();
   var registerRePassword = $("#SURePassword").val();
   var registerPhoto = $("#SUPhoto")[0].files[0];
+
+  //
   var errorMessage = $("#signup-error");
+  var successMessage = $("#signup-message");
 
   if (!registerPhoto) {
     $("#signup-error").html("Please upload a profile photo.").fadeIn();
@@ -37,7 +40,7 @@ function register() {
   }
 
   var formData = new FormData();
-  formData.append("student_photo", registerUserId);
+  formData.append("registerUserId", registerUserId);
   formData.append("registerFirstName", registerFirstName);
   formData.append("registerMiddleName", registerMiddleName);
   formData.append("registerLastName", registerLastName);
@@ -50,7 +53,7 @@ function register() {
   $("#loadingMessage").fadeIn();
 
   $.ajax({
-    url: "includes/api/signup.inc.php",
+    url: "includes/api/signup.api.php",
     method: "POST",
     data: formData,
     contentType: false, // Important for file uploads
@@ -62,12 +65,14 @@ function register() {
 
       if (data.status === "error") {
         errorMessage.html(data.message).fadeIn();
+      } else if (data.status === "success") {
+        successMessage.html(data.message).fadeIn();
       }
 
       setTimeout(function () {
         errorMessage.fadeOut();
-        $("#registerMessage").fadeOut();
-      }, 2000);
+        successMessage.fadeOut();
+      }, 3000);
     },
     error: function (jqXHR, textStatus, errorThrown) {
       console.error("AJAX Error: ", textStatus, errorThrown); // Log any errors

@@ -24,7 +24,7 @@ class SignUpController extends User {
 
   public function signupUser() {
     if ($this->invalidUserId() !== null) {
-      return $this->invalidStudentID();
+      return $this->invalidUserId();
     } elseif ($this->invalidEmail() !== null) {
       return $this->invalidEmail();
     } elseif ($this->passwordMatch() !== null) {
@@ -56,18 +56,18 @@ class SignUpController extends User {
 
     return $result;
   }
+  */
 
   private function invalidUserId() {
     $result = null;
 
-    if (!preg_match('/^[0-9-]+$/', $this->studentID)) {
-      $message = '<div>Invalid Student ID!</div>';
+    if (!preg_match('/^[0-9-]+$/', $this->userId)) {
+      $message = 'Invalid Student ID!';
       $result = ['status' => 'error', 'message' => $message];
     } 
 
     return $result;
   }
-  */
 
   private function invalidEmail() {
     $result = null;

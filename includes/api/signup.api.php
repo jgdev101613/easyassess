@@ -1,42 +1,92 @@
 <?php 
 
 declare(strict_types=1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-require_once 'signup.classes.php';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registerStudentID'])) {
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registerUserId'])) {
   
   // User Auth
-  $userId = $_POST["registerStudentID"];
-  $email = $_POST["regsterStudentEmail"];
-  $password = $_POST["registerStudentPassword"];
-  $repassword = $_POST["registerStudentRePassword"];
+  $userId = $_POST["registerUserId"];
+  $email = $_POST["registerEmail"];
+  $password = $_POST["registerPassword"];
+  $repassword = $_POST["registerRePassword"];
+  $user_type = "student"; // or get from $_POST if needed
 
-  // User Details
-  $studentFirstName = $_POST["registerStudentFirstName"];
-  $studentMiddleName = $_POST["registerStudentMiddleName"];
-  $studentLastName = $_POST["registerStudentLastName"];
+  // User Detaiols
+  $studentFirstName = $_POST["registerFirstName"];
+  $studentMiddleName = $_POST["registerMiddleName"];
+  $studentLastName = $_POST["registerLastName"];
 
-  // Initialize your database connection
-  $db = $conn; 
+  if (isset($_FILES['registerPhoto']) && $_FILES['registerPhoto']['error'] === UPLOAD_ERR_OK) {
+    $fileTmpPath = $_FILES['registerPhoto']['tmp_name'];
+    $fileName = $_FILES['registerPhoto']['name'];
+    $fileSize = $_FILES['registerPhoto']['size'];
+    $fileType = $_FILES['registerPhoto']['type'];
+    $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-  // Instantiate signup controller
-  include_once "../database/dbh.inc.php";
-  include_once "../controller/SignUpController.php";
-  $signup = new SignUpController($db, $userId, $user_type, $email, $password, $repassword, $profile_image);
-  $response = $signup->signupUser();
+    $maxFileSize = 30 * 1024 * 1024; // 30MB
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
-  // Running Error handling
-  if ($response['status'] === 'success') {
-    //accountActivatedEmail($accountType, $accountEmail);
+    if ($fileSize > $maxFileSize) {
+      echo json_encode(['status' => 'error', 'message' => 'Image must be less than 30MB.']);
+      exit();
+    }
+
+    if (!in_array($fileExt, $allowedExtensions)) {
+      echo json_encode(['status' => 'error', 'message' => 'Invalid image file type.']);
+      exit();
+    }
+
+    // Create folder if not exists
+    $uploadDir = "../../assets/Users/$userId/";
+    $dbDirectory = "assets/Users/$userId/";
+    if (!file_exists($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
+    $newFileName = uniqid() . '.' . $fileExt;
+    $registerPhoto = $uploadDir . $newFileName;
+
+    if (!move_uploaded_file($fileTmpPath, $registerPhoto)) {
+      echo json_encode([
+          'status' => 'error',
+          'message' => 'Failed to move uploaded file.'
+      ]);
+      exit();
+    }
+
+    $profile_image = $dbDirectory . $newFileName;
+
+
+    // Instantiate signup controller
+    include_once "../database/dbh.inc.php";
+    include_once "../controller/SignUpController.php";
     
-    $message = 'Registered Successfully! Please check your email for activation link.';
-    $response = ['status' => 'success', 'message' => $message];
-  } else {
-    $message = $response['message'];
-    $response = ['status' => 'error', 'message' => $message];
+    // Initialize your database connection
+    $db = $conn; 
+    
+    $signup = new SignUpController($db, $userId, $user_type, $email, $password, $repassword, $profile_image);
+    $response = $signup->signupUser();
+
+    // Running Error handling
+    if ($response['status'] === 'success') {
+      //accountActivatedEmail($accountType, $accountEmail);
+      
+      $message = 'Registered Successfully! Please check your email for activation link.';
+      $response = ['status' => 'success', 'message' => $message];
+    } else {
+      $message = $response['message'];
+      $response = ['status' => 'error', 'message' => $message];
+    }
+
+    // Going back to frontpage
+    echo json_encode($response);
+    exit();
+
   }
 
-  // Going back to frontpage
-  echo json_encode($response);
-  exit();
+  
 }

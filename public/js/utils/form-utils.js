@@ -24,6 +24,7 @@ function selectFile() {
   if (fileInput.files.length > 0) {
     console.log("Hello");
     fileName.textContent = fileInput.files[0].name;
+    fileName.title = fileInput.files[0].name;
   } else {
     fileName.textContent = "No file selected";
   }

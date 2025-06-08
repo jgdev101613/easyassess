@@ -114,6 +114,7 @@ require_once "includes/session/config.session.inc.php";
               <h2>Welcome to SACLI Easy Assess</h2>
               <p>Signup</p>
               <div class="error-message" id="signup-error"></div>
+              <div class="success-message" id="signup-message"></div>
             </div>
           </div>
           <div class="form-body form-body-signup">

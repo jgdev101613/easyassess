@@ -14,7 +14,7 @@ class User {
   public function checkDuplicate($userId, $email) {
     $result;
     try {
-      $stmt = $this->db->prepare('SELECT id FROM students WHERE id = :id OR email = :email;');
+      $stmt = $this->db->prepare('SELECT id FROM users WHERE id = :id OR email = :email;');
       $stmt->execute([
         'id' => $userId,
         'email' => $email
@@ -47,16 +47,18 @@ class User {
         'cost' => 12,
       ];
 
+      $userId = str_replace('-', '', $userId);
+
       $stmt = $this->db->prepare('
-        INSERT INTO users (id, user_type, password, profile_image) 
-        VALUES (:id, :user_type, :password, :profile_image);
+        INSERT INTO users (id, user_type, email, password, profile_image) 
+        VALUES (:id, :user_type, :email, :password, :profile_image);
       ');
 
       $stmt->execute([
         'id' => $userId,
         'user_type' => $user_type,
         'email' => $email,
-        'studentPassword' => password_hash($password, PASSWORD_BCRYPT, $options),
+        'password' => password_hash($password, PASSWORD_BCRYPT, $options),
         'profile_image' => $profile_image 
       ]);
 

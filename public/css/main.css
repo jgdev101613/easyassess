@@ -44,3 +44,10 @@
   margin: 5px 0;
   text-align: center;
 }
+
+.success-message {
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  margin: 5px 0;
+  text-align: center;
+}

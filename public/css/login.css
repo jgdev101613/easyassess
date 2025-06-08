@@ -308,6 +308,12 @@
 #fileName {
   font-size: 0.9rem;
   color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 110px; /* or set a fixed width like 200px */
+  vertical-align: middle;
 }
 
 /* FOOTER */
