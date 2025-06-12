@@ -16,7 +16,9 @@ require_once "../includes/session/config.session.inc.php";
 //   'is_logged_in' => true,
 // ];
 
-if (!isset($_SESSION['user'])) {
+$user_type = $_SESSION['user']['user_type'];
+
+if (!isset($_SESSION['user']) || $user_type === "student") {
   header('Location: ../index.php');
   exit();
 }
@@ -60,7 +62,7 @@ $profile_photo = null;
   </header>
 
   <div class="container">
-    <div class="clearance-box" data-allowed="false">
+    <div class="clearance-box">
       <div class="clearance-title">Librarian</div>
       <div class="sub-items">View requirements & request signature</div>
       <div class="status">
@@ -69,7 +71,7 @@ $profile_photo = null;
       </div>
     </div>
 
-    <div class="clearance-box" data-allowed="true"> 
+    <div class="clearance-box" data-allowed="true">
       <div class="clearance-title">Office of Student Affairs</div>
       <div class="sub-items">- POD</div>
       <div class="sub-items">- Psychology Test</div>
@@ -108,30 +110,6 @@ $profile_photo = null;
     </div>
   </div>
 
-  <!-- Modal -->
-  <div id="requirementModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <h2>Submit Requirements</h2>
-      <form id="requirementForm">
-        <label for="attachment">Upload Attachment:</label>
-        <input type="file" id="attachment" name="attachment" required>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Invalid Modal -->
-  <div id="invalidModal" class="modal">
-    <div class="modal-content invalid">
-      <span class="close-btn">&times;</span>
-      <h2>Access Denied</h2>
-      <p>You must complete and submit the requirements for all previous sections before continuing.</p>
-      <button class="ok-btn">Okay</button>
-    </div>
-  </div>
-
-
   <nav>
     <a href="#" class="nav-link active">
       <!-- <i class="fa-solid fa-signature"></i> -->
@@ -167,8 +145,6 @@ $profile_photo = null;
       <span class="active-indicator"></span>
     </a>
   </nav>
-
-  <script src="../public/js/main.js "></script>
     
 </body>
 </html>

@@ -42,6 +42,10 @@ header {
   background-color: var(--color-button-hover);
   color: white;
   transform: scale(1.01);
+
+  .status p {
+    color: black;
+  }
 }
 
 .clearance-title {
@@ -186,3 +190,115 @@ nav i {
 nav svg {
   height: 1.2rem;
 } */
+
+/* MODAL */
+/* Modal background */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal content */
+.modal-content {
+  background: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 16px;
+  max-width: 90%;
+  position: relative;
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Form styles */
+#requirementForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#requirementForm input[type="file"] {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+#requirementForm button {
+  background: #2ecc71;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#requirementForm button:hover {
+  background: #27ae60;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* INVALID MODAL */
+.modal-content.invalid {
+  background: #ffe6e6;
+  border-left: 6px solid #e74c3c;
+}
+
+.modal-content.invalid h2 {
+  color: #c0392b;
+}
+
+.modal-content.invalid p {
+  color: #555;
+}
+
+.ok-btn {
+  background: #e74c3c;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.ok-btn:hover {
+  background: #c0392b;
+}
