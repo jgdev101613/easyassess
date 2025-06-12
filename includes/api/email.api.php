@@ -2,6 +2,7 @@
 // ==== HANDLE AJAX REQUEST ====
 
 require_once "../model/Email.php";
+require_once "../database/dbh.inc.php";
 
 $db = $conn;
 $mailer = new AccountMailer($db);

@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registerUserId'])) {
   $user_type = "student"; // or get from $_POST if needed
 
   // User Detaiols
-  $studentFirstName = $_POST["registerFirstName"];
-  $studentMiddleName = $_POST["registerMiddleName"];
-  $studentLastName = $_POST["registerLastName"];
+  $firstName = $_POST["registerFirstName"];
+  $middleName = $_POST["registerMiddleName"];
+  $lastName = $_POST["registerLastName"];
 
   if (isset($_FILES['registerPhoto']) && $_FILES['registerPhoto']['error'] === UPLOAD_ERR_OK) {
     $fileTmpPath = $_FILES['registerPhoto']['tmp_name'];
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registerUserId'])) {
     // Initialize your database connection
     $db = $conn; 
     
-    $signup = new SignUpController($db, $userId, $user_type, $email, $password, $repassword, $profile_image);
+    $signup = new SignUpController($db, $userId, $user_type, $email, $password, $repassword, $profile_image, $firstName, $middleName, $lastName);
     $response = $signup->signupUser();
 
     // Running Error handling

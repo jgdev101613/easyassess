@@ -134,16 +134,16 @@ class AccountMailer
 //     // Deactivation or other POST actions can follow similar structure.
 // }
 
-$email = "felicisimojv@gmail.com";
-$type = "student";
-$status = 'deactivate';
+// $email = "felicisimojv@gmail.com";
+// $type = "student";
+// $status = 'deactivate';
 
-$mailer = new AccountMailer();
+// $mailer = new AccountMailer();
 
-if ($status === 'Active') {
-    echo '<div class="alert alert-warning">Account already activated!</div>';
-    exit;
-}
+// if ($status === 'Active') {
+//     echo '<div class="alert alert-warning">Account already activated!</div>';
+//     exit;
+// }
 
-$mailer->sendRegistrationEmail($type, $email);
-exit;
+// $mailer->sendRegistrationEmail($type, $email);
+// exit;

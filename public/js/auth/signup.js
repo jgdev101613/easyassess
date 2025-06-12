@@ -60,11 +60,12 @@ function register() {
     processData: false, // Important for file uploads
     dataType: "json",
     success: function (data) {
-      console.log("AJAX Response:", data); // Log the response
-      // $("#registerMessage").html(data).fadeIn();
+      console.log("AJAX Response:", data);
+
+      message = data.message;
 
       if (data.status === "error") {
-        errorMessage.html(data.message).fadeIn();
+        showToast(message, "error", 2000);
 
         // Hide the loading message once the request is complete
         $("#loadingMessage").fadeOut();
@@ -82,10 +83,9 @@ function register() {
           dataType: "json",
           success: function (response) {
             if (response.status === "success") {
-              console.log(response.get);
-              successMessage.html(data.message).fadeIn();
+              showToast(message, "success", 5000);
             } else {
-              console.warn(response.message);
+              showToast(message, "error", 3000);
             }
 
             // Hide the loading message once the request is complete

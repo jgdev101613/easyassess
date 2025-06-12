@@ -1,5 +1,5 @@
 // toast.js
-window.showToast = function (message, type = "info", duration = 3000) {
+window.showToast = function (message, type = "info", duration) {
   let bgColor;
 
   switch (type) {

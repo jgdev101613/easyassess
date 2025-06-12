@@ -1,6 +1,15 @@
-<?php
+<!-- 
+  Copyright © 2025 John Gregg Felicisimo
+  All rights reserved. Unauthorized use is prohibited.
+-->
+
+<?php 
 // SESSION
 require_once "includes/session/config.session.inc.php";
+
+if(isset($_SESSION['user'])){
+  header('Location: auth/dashboard.php');
+} 
 ?>
 
 <!DOCTYPE html>
@@ -12,6 +21,8 @@ require_once "includes/session/config.session.inc.php";
     <link rel="stylesheet" href="public/css/loading.css" />
     <link rel="stylesheet" href="public/css/login.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- ICON -->
+    <link rel="icon" type="image/png" href="assets/saclilogo.png">
 
     <!-- TOASTIFY -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -114,7 +125,7 @@ require_once "includes/session/config.session.inc.php";
             <img src="assets/saclilogo.png" alt="" height="80">
             <div class="form-header-text">
               <h2>Welcome to SACLI Easy Assess</h2>
-              <p>Signup</p>
+              <p>Register an account</p>
               <div class="error-message" id="signup-error"></div>
               <div class="success-message" id="signup-message"></div>
             </div>

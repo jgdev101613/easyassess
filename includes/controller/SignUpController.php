@@ -11,8 +11,11 @@ class SignUpController extends User {
   private $password;
   private $repassword;
   private $profile_image;
+  private $firstName;
+  private $middleName;
+  private $lastName;
 
-  public function __construct($db, $userId, $user_type, $email, $password, $repassword, $profile_image) {
+  public function __construct($db, $userId, $user_type, $email, $password, $repassword, $profile_image, $firstName, $middleName, $lastName) {
     parent::__construct($db);
     $this->userId = $userId;
     $this->user_type = $user_type;
@@ -20,6 +23,9 @@ class SignUpController extends User {
     $this->password = $password;
     $this->repassword = $repassword;
     $this->profile_image = $profile_image;
+    $this->firstName = $firstName;
+    $this->middleName = $middleName;
+    $this->lastName = $lastName;
   }
 
   public function signupUser() {
@@ -38,7 +44,10 @@ class SignUpController extends User {
         $this->user_type,
         $this->email,
         $this->password,
-        $this->profile_image
+        $this->profile_image,
+        $this->firstName,
+        $this->middleName,
+        $this->lastName
       );
 
       return $response;
@@ -87,6 +96,13 @@ class SignUpController extends User {
       $message = 'Passwords Do Not Match!';
       $result = ['status' => 'error', 'message' => $message];
     } 
+    
+    // ✅ Check password length
+    $length = strlen($this->password);
+    if ($length < 8 || $length > 16) {
+      $message = 'Password must be between 8 and 16 characters!';
+      return ['status' => 'error', 'message' => $message];
+    }
 
     return $result;
   }

@@ -4,13 +4,14 @@
 :root {
   --color-primary: #3fae60; /* Primary color */
   --color-secondary: #216734; /* Secondary color */
-  --color-texthover: #f3c911; /* Text hover color */
+  --color-texthover: #fcd31c; /* Text hover color */
   --color-button: #a48c20; /* Button color */
   --color-button-hover: #6fbe45; /* Button hover color */
-  --color-text: #333; /* Text color */
+  --color-text: #161616; /* Text color */
   --color-text-secondary: #fff; /* Secondary text color */
-  --color-background: #fffefe; /* Background color */
+  --color-background: #eeeeee; /* Background color */
   --font-family: "Poppins", sans-serif; /* Font family */
+  --radius: 16px;
 }
 
 /* DEFAULT STYLING */

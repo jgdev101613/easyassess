@@ -43,12 +43,18 @@ function signin() {
     },
     dataType: "json",
     success: function (data) {
-      console.log("AJAX Response:", data); // Log the response
+      console.log("AJAX Response:", data);
+      var message = data.message; // Log the response
 
-      if (data.status === "error") {
-        showToast("Login successful!", "success");
-      } else {
-        showToast("User Not Found", "error");
+      if (data.status === "success") {
+        showToast(message, "success", 2000);
+        setTimeout(() => {
+          window.location.href = "auth/dashboard.php";
+        }, 2000); // Wait 2 seconds (same as toast duration)
+      } else if (data.status === "warning") {
+        showToast(message, "warning", 5000);
+      } else if (data.status === "error") {
+        showToast(message, "error", 4000);
       }
 
       setTimeout(function () {
@@ -61,10 +67,6 @@ function signin() {
     complete: function () {
       // Hide the loading message once the request is complete
       $("#loadingMessage").fadeOut();
-
-      // Remove the value of the input fields
-      $("#SIUserId").val("");
-      $("#SIPassword").val("");
     },
   });
 }

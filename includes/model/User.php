@@ -12,7 +12,7 @@ class User {
   }
 
   public function checkDuplicate($userId, $email) {
-    $result;
+    $result = null;
     try {
       $stmt = $this->db->prepare('SELECT id FROM users WHERE id = :id OR email = :email;');
       $stmt->execute([
@@ -35,12 +35,39 @@ class User {
     }
   }
 
+  public function checkDuplicateUserId($user_id) {
+    try {
+      $stmt = $this->db->prepare('SELECT user_id FROM students WHERE user_id = :user_id');
+      $stmt->execute([
+        'user_id' => $user_id,
+      ]);
+      return $stmt->rowCount() > 0;
+    } catch (PDOException $e) {
+      return ['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()];
+    }
+  }
+
+  public function generateUniqueUserId() {
+    do {
+      $prefix = date("Ym");
+      $random = str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
+      $userId = $prefix . $random;
+  
+      $isDuplicate = $this->checkDuplicateUserId($userId);
+    } while ($isDuplicate === true);
+  
+    return $userId;
+  }
+
   public function createUser(
       $userId, 
       $user_type,
       $email,
       $password,
-      $profile_image
+      $profile_image,
+      $firstName,
+      $middleName,
+      $lastName
     ) {
     try {
       $options = [
@@ -54,7 +81,7 @@ class User {
         VALUES (:id, :user_type, :email, :password, :profile_image, :status);
       ');
 
-      $stmt->execute([
+      $sucess = $stmt->execute([
         'id' => $userId,
         'user_type' => $user_type,
         'email' => $email,
@@ -63,8 +90,32 @@ class User {
         'status' => "Pending"
       ]);
 
-      $stmt = null; // Close the statement
-      return ['status' => 'success', 'message' => 'Account Created Successfully!'];
+      if ($sucess) {
+        try {
+          // ✅ Query executed successfully
+          $user_id = $this->generateUniqueUserId();
+
+          $studentsStmt = $this->db->prepare('
+            INSERT INTO students (user_id, student_id, first_name, middle_name, last_name) 
+            VALUES (:user_id, :student_id, :first_name, :middle_name, :last_name);
+          ');
+
+          $user_id = $this->generateUniqueUserId();
+
+          $studentsStmt->execute([
+            'user_id' => $user_id,
+            'student_id' => $userId,
+            'first_name' => $firstName,
+            'middle_name' => $middleName,
+            'last_name' => $lastName,
+          ]);
+
+          return ['status' => 'success', 'message' => 'Account Created Successfully!'];
+        } catch (\Throwable $th) {
+          $message = 'Database error: ' . $th->getMessage();
+          return ['status' => 'error', 'message' => $message];
+        }
+      }
     } catch (PDOException $th) {
       $message = 'Database error: ' . $th->getMessage();
       return ['status' => 'error', 'message' => $message];
@@ -89,6 +140,21 @@ class User {
         if (password_verify($password, $row['password'])) {
           // Set the account details in the session
           $this->getAccountDetails($userId);
+
+          $stmt = $this->db->prepare('
+            SELECT status FROM users WHERE id = :id;
+          ');
+
+          $stmt->execute([
+            'id' => $userId,
+          ]);
+
+          $statusRow = $stmt->fetch(PDO::FETCH_ASSOC);
+          $status = $statusRow['status'];
+
+          if ($status === 'Pending' || $status === "Blocked") {
+            return ['status' => 'warning', 'message' => 'Your account is not yet activated. Please contact your administrator'];
+          }
 
           return ['status' => 'success', 'message' => 'Login Successful!'];
         } else {
@@ -142,6 +208,7 @@ class User {
           'profile_photo' => $fullUser['profile_image'] ?? null,
           'email' => $fullUser['email'] ?? null,
           'user_type' => $fullUser['user_type'],
+          'status' => $fullUser['status'],
           'is_logged_in' => true,
       ];
 

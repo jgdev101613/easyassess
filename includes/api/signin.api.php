@@ -23,6 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signinUserId'])) {
     
     $message = 'Login Successful!';
     $response = ['status' => 'success', 'message' => $message];
+  } else if ($response['status'] === 'warning') {
+    $message = $response['message'];
+    $response = ['status' => 'warning', 'message' => $message];
   } else {
     $message = $response['message'];
     $response = ['status' => 'error', 'message' => $message];
