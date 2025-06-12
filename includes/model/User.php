@@ -50,8 +50,8 @@ class User {
       $userId = str_replace('-', '', $userId);
 
       $stmt = $this->db->prepare('
-        INSERT INTO users (id, user_type, email, password, profile_image) 
-        VALUES (:id, :user_type, :email, :password, :profile_image);
+        INSERT INTO users (id, user_type, email, password, profile_image, status) 
+        VALUES (:id, :user_type, :email, :password, :profile_image, :status);
       ');
 
       $stmt->execute([
@@ -59,7 +59,8 @@ class User {
         'user_type' => $user_type,
         'email' => $email,
         'password' => password_hash($password, PASSWORD_BCRYPT, $options),
-        'profile_image' => $profile_image 
+        'profile_image' => $profile_image,
+        'status' => "Pending"
       ]);
 
       $stmt = null; // Close the statement
@@ -71,21 +72,23 @@ class User {
 
   }
 
-  public function getUser($user_id, $password) {
+  public function getUser($userId, $password) {
     try {
       $stmt = $this->db->prepare('
         SELECT password FROM users WHERE id = :id;
       ');
 
+      $userId = str_replace('-', '', $userId);
+
       $stmt->execute([
-        'id' => $user_id,
+        'id' => $userId,
       ]);
 
       if ($stmt->rowCount() > 0) {
-        $row = $stmt->fetchAll(PDO::FETCH_ASSOC );
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (password_verify($password, $row['password'])) {
           // Set the account details in the session
-          $this->getAccountDetails($user_id);
+          $this->getAccountDetails($userId);
 
           return ['status' => 'success', 'message' => 'Login Successful!'];
         } else {
@@ -106,11 +109,11 @@ class User {
   }
 
 
-  function getAccountDetails($user_id) {
+  function getAccountDetails($userId) {
     try {
       // Step 1: Get user base info
       $stmt = $this->db->prepare('SELECT * FROM users WHERE id = :id');
-      $stmt->execute([':id' => $user_id]);
+      $stmt->execute([':id' => $userId]);
       $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
       if (!$user) return false; // User not found
@@ -118,11 +121,11 @@ class User {
       // Step 2: Merge extra data from student or professor
       if ($user['user_type'] === 'student') {
           $stmt = $this->db->prepare('SELECT * FROM students WHERE user_id = :id');
-          $stmt->execute([':id' => $user_id]);
+          $stmt->execute([':id' => $userId]);
           $extra = $stmt->fetch(PDO::FETCH_ASSOC);
       } elseif ($user['user_type'] === 'professor') {
           $stmt = $this->db->prepare('SELECT * FROM professors WHERE user_id = :id');
-          $stmt->execute([':id' => $user_id]);
+          $stmt->execute([':id' => $userId]);
           $extra = $stmt->fetch(PDO::FETCH_ASSOC);
       } else {
           $extra = [];
@@ -137,7 +140,7 @@ class User {
       $_SESSION['user'] = [
           'id' => $fullUser['id'],
           'profile_photo' => $fullUser['profile_image'] ?? null,
-          'rfid_code' => $fullUser['rfid_code'] ?? null,
+          'email' => $fullUser['email'] ?? null,
           'user_type' => $fullUser['user_type'],
           'is_logged_in' => true,
       ];

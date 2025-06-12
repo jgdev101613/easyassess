@@ -5,13 +5,13 @@ declare(strict_types=1);
 require_once "../model/User.php";
 
 class SignInController extends User {
-  private $studentID;
-  private $studentRePassword;
+  private $userId;
+  private $password;
 
-  public function __construct($db, $studentID, $studentPassword) {
+  public function __construct($db, $userId, $password) {
     parent::__construct($db);
-    $this->studentID = $studentID;
-    $this->studentPassword = $studentPassword;
+    $this->userId = $userId;
+    $this->password = $password;
   }
 
   public function signInUser() {
@@ -20,8 +20,8 @@ class SignInController extends User {
     } else {
 
     $response = $this->getUser(
-      $this->studentID, 
-      $this->studentPassword, 
+      $this->userId, 
+      $this->password, 
     );
       return $response;
     }
@@ -30,7 +30,7 @@ class SignInController extends User {
   private function emptyInput() {
     $result = null;
 
-    if (empty($this->studentID) || empty($this->studentPassword)) {
+    if (empty($this->userId) || empty($this->password)) {
       $message = 'Fields Cannot Be Empty!';
       $result = ['status' => 'error', 'message' => $message];
     } 

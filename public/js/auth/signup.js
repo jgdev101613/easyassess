@@ -65,8 +65,47 @@ function register() {
 
       if (data.status === "error") {
         errorMessage.html(data.message).fadeIn();
+
+        // Hide the loading message once the request is complete
+        $("#loadingMessage").fadeOut();
       } else if (data.status === "success") {
-        successMessage.html(data.message).fadeIn();
+        // Send The Email Notif
+        $.ajax({
+          url: "includes/api/email.api.php",
+          method: "POST",
+          data: {
+            action: "register",
+            email: registerEmail,
+            type: "Student",
+            status: "Pending",
+          },
+          dataType: "json",
+          success: function (response) {
+            if (response.status === "success") {
+              console.log(response.get);
+              successMessage.html(data.message).fadeIn();
+            } else {
+              console.warn(response.message);
+            }
+
+            // Hide the loading message once the request is complete
+            $("#loadingMessage").fadeOut();
+
+            setTimeout(function () {
+              successMessage.fadeOut();
+            }, 3000);
+          },
+          complete: function () {
+            $("#SUUserId").val("");
+            $("#SUFirstName").val("");
+            $("#SUMiddleName").val("");
+            $("#SULastName").val("");
+            $("#SUEmail").val("");
+            $("#SUPassword").val("");
+            $("#SURePassword").val("");
+            $("#SUPhoto").val("");
+          },
+        });
       }
 
       setTimeout(function () {
@@ -78,9 +117,6 @@ function register() {
       console.error("AJAX Error: ", textStatus, errorThrown); // Log any errors
     },
     complete: function () {
-      // Hide the loading message once the request is complete
-      $("#loadingMessage").fadeOut();
-
       // Remove the value of the password input fields
       $("#SUPassword").val("");
       $("#SURePassword").val("");

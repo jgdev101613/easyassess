@@ -13,7 +13,9 @@ require_once "includes/session/config.session.inc.php";
     <link rel="stylesheet" href="public/css/login.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
+    <!-- TOASTIFY -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <title>SACLI - Easy Assess</title>
   </head>
@@ -81,7 +83,7 @@ require_once "includes/session/config.session.inc.php";
           <div class="form-body">
             <div class="form-group" id="StudentIDGroup">
               <i class="fas fa-user"></i>
-              <input type="text" id="userId" name="userId" placeholder="User ID" required />
+              <input type="text" id="SIUserId" name="SIUserId" placeholder="User ID" required />
             </div>
             <div class="form-group" id="StudentPasswordGroup" >
               <i class="fas fa-lock"></i>
@@ -202,9 +204,8 @@ require_once "includes/session/config.session.inc.php";
 
     <!-- AUTHENTICATION -->
     <script src="public/js/auth/signin.js"></script>
+    <script src="public/js/utils/toast.js"></script>
     <script src="public/js/auth/signup.js"></script>
 
-    <!-- TOASTIFY -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   </body>
 </html>

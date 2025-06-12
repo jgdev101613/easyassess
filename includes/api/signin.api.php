@@ -2,21 +2,19 @@
 
 declare(strict_types=1);
 
-require_once 'signin.classes.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signinStudentId'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signinUserId'])) {
   
   // Grabbing data from the form
-  $studentID = $_POST["signinStudentId"];
-  $studentPassword = $_POST["signinStudentPassword"];
-
-  // Initialize your database connection
-  $db = $conn; 
+  $signinUserId = $_POST["signinUserId"];
+  $signinPassword = $_POST["signinPassword"];
 
   // Instantiate signin controller
   include_once "../database/dbh.inc.php";
-  include_once "signin-contr.classes.php";
-  $signin = new SignInController($db, $studentID, $studentPassword);
+  include_once "../controller/SignInController.php";
+  
+  // Initialize your database connection
+  $db = $conn; 
+  $signin = new SignInController($db, $signinUserId, $signinPassword);
   $response = $signin->signInUser();
 
   // Running Error handling
@@ -24,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signinStudentId'])) {
     //accountActivatedEmail($accountType, $accountEmail);
     
     $message = 'Login Successful!';
-    $response = ['status' => 'success', 'message' => $message, 'session' => $_SESSION];
+    $response = ['status' => 'success', 'message' => $message];
   } else {
     $message = $response['message'];
     $response = ['status' => 'error', 'message' => $message];
