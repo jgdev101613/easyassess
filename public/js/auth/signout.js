@@ -1,29 +1,39 @@
-$(function () {
-  // Listen to register button
-  $("#buttonSignOut").on("click", function () {
-    console.log("Sign In function called");
-    signOut();
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  const buttonSignOut = document.getElementById("buttonSignOut");
+
+  if (buttonSignOut) {
+    buttonSignOut.addEventListener("click", () => {
+      console.log("Sign Out function called");
+      signOut();
+    });
+  }
 });
 
-function signOut() {
-  $.ajax({
-    url: "includes/signout/signout.inc.php",
-    success: function (data) {
-      console.log("AJAX Response:", data); // Log the response
-      $("#signinMessage").html(data).fadeIn();
+async function signOut() {
+  try {
+    const res = await fetch("includes/signout/signout.inc.php");
+    const data = await res.text();
 
-      // Parse the JSON string into a JavaScript object
-      var parsedData = JSON.parse(data);
+    console.log("Fetch Response:", data);
 
+    const signinMessage = document.getElementById("signinMessage");
+    if (signinMessage) {
+      signinMessage.innerHTML = data;
+      signinMessage.style.display = "block";
+    }
+
+    let parsedData;
+    try {
+      parsedData = JSON.parse(data);
       console.log(parsedData.message);
+    } catch (err) {
+      console.warn("Response was not JSON:", err);
+    }
 
-      if (data.indexOf("Logged out successfully!") >= 0) {
-        window.location = "index.php";
-      }
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.error("AJAX Error: ", textStatus, errorThrown); // Log any errors
-    },
-  });
+    if (data.includes("Logged out successfully!")) {
+      window.location = "index.php";
+    }
+  } catch (err) {
+    console.error("Fetch Error:", err);
+  }
 }

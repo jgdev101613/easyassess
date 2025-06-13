@@ -1,45 +1,36 @@
-$(function () {
-  // Listen to register button
-  $("#buttonSignUp").on("click", function () {
-    register();
-  });
+import { showToast } from "../utils/toast.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const signUpBtn = document.getElementById("buttonSignUp");
+  signUpBtn.addEventListener("click", register);
 });
 
-function register() {
-  // Log when the function is called
-  var registerUserId = $("#SUUserId").val();
-  var registerFirstName = $("#SUFirstName").val();
-  var registerMiddleName = $("#SUMiddleName").val();
-  var registerLastName = $("#SULastName").val();
-  var registerEmail = $("#SUEmail").val();
-  var registerPassword = $("#SUPassword").val();
-  var registerRePassword = $("#SURePassword").val();
-  var registerPhoto = $("#SUPhoto")[0].files[0];
+async function register() {
+  const registerUserId = document.getElementById("SUUserId").value;
+  const registerFirstName = document.getElementById("SUFirstName").value;
+  const registerMiddleName = document.getElementById("SUMiddleName").value;
+  const registerLastName = document.getElementById("SULastName").value;
+  const registerEmail = document.getElementById("SUEmail").value;
+  const registerPassword = document.getElementById("SUPassword").value;
+  const registerRePassword = document.getElementById("SURePassword").value;
+  const registerPhoto = document.getElementById("SUPhoto").files[0];
 
-  //
-  var errorMessage = $("#signup-error");
-  var successMessage = $("#signup-message");
+  const errorMessage = document.getElementById("signup-error");
+  const successMessage = document.getElementById("signup-message");
 
   if (!registerPhoto) {
-    $("#signup-error").html("Please upload a profile photo.").fadeIn();
-
-    setTimeout(function () {
-      $("#signup-error").fadeOut();
-    }, 3000);
+    const errorMsg = "Please upload a profile photo.";
+    showToast(errorMsg, "error", 3000);
     return;
   }
 
-  // Check file size (max 30MB)
-  if (registerPhoto && registerPhoto.size > 30 * 1024 * 1024) {
-    setTimeout(function () {
-      $("#errorMessage")
-        .html("File size exceeds 30MB. Please upload a smaller file.")
-        .fadeIn();
-    }, 3000);
+  if (registerPhoto.size > 30 * 1024 * 1024) {
+    const errorMsg = "File size exceeds 30MB. Please upload a smaller file.";
+    showToast(errorMsg, "error", 3000);
     return;
   }
 
-  var formData = new FormData();
+  const formData = new FormData();
   formData.append("registerUserId", registerUserId);
   formData.append("registerFirstName", registerFirstName);
   formData.append("registerMiddleName", registerMiddleName);
@@ -49,77 +40,70 @@ function register() {
   formData.append("registerRePassword", registerRePassword);
   formData.append("registerPhoto", registerPhoto);
 
-  // Loading
-  $("#loadingMessage").fadeIn();
+  document.getElementById("loadingMessage").style.display = "flex";
 
-  $.ajax({
-    url: "includes/api/signup.api.php",
-    method: "POST",
-    data: formData,
-    contentType: false, // Important for file uploads
-    processData: false, // Important for file uploads
-    dataType: "json",
-    success: function (data) {
-      console.log("AJAX Response:", data);
+  try {
+    const res = await fetch("includes/api/signup.api.php", {
+      method: "POST",
+      body: formData,
+    });
 
-      message = data.message;
+    const data = await res.json();
+    console.log("Fetch Response:", data);
 
-      if (data.status === "error") {
-        showToast(message, "error", 2000);
+    const message = data.message;
 
-        // Hide the loading message once the request is complete
-        $("#loadingMessage").fadeOut();
-      } else if (data.status === "success") {
-        // Send The Email Notif
-        $.ajax({
-          url: "includes/api/email.api.php",
+    if (data.status === "error") {
+      showToast(message, "error", 2000);
+      document.getElementById("loadingMessage").style.display = "none";
+    } else if (data.status === "success") {
+      try {
+        const emailRes = await fetch("includes/api/email.api.php", {
           method: "POST",
-          data: {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
             action: "register",
             email: registerEmail,
             type: "Student",
             status: "Pending",
-          },
-          dataType: "json",
-          success: function (response) {
-            if (response.status === "success") {
-              showToast(message, "success", 5000);
-            } else {
-              showToast(message, "error", 3000);
-            }
-
-            // Hide the loading message once the request is complete
-            $("#loadingMessage").fadeOut();
-
-            setTimeout(function () {
-              successMessage.fadeOut();
-            }, 3000);
-          },
-          complete: function () {
-            $("#SUUserId").val("");
-            $("#SUFirstName").val("");
-            $("#SUMiddleName").val("");
-            $("#SULastName").val("");
-            $("#SUEmail").val("");
-            $("#SUPassword").val("");
-            $("#SURePassword").val("");
-            $("#SUPhoto").val("");
-          },
+          }),
         });
+
+        const emailData = await emailRes.json();
+
+        if (emailData.status === "success") {
+          showToast(message, "success", 5000);
+        } else {
+          showToast(message, "error", 3000);
+        }
+
+        document.getElementById("loadingMessage").style.display = "none";
+        setTimeout(() => (successMessage.style.display = "none"), 3000);
+      } catch (err) {
+        console.error("Email API error:", err);
       }
 
-      setTimeout(function () {
-        errorMessage.fadeOut();
-        successMessage.fadeOut();
-      }, 3000);
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.error("AJAX Error: ", textStatus, errorThrown); // Log any errors
-    },
-    complete: function () {
-      // Remove the value of the password input fields
-      $("#SUPassword").val("");
-      $("#SURePassword").val("");
-    },
-  });
+      // Clear form fields
+      document.getElementById("SUUserId").value = "";
+      document.getElementById("SUFirstName").value = "";
+      document.getElementById("SUMiddleName").value = "";
+      document.getElementById("SULastName").value = "";
+      document.getElementById("SUEmail").value = "";
+      document.getElementById("SUPassword").value = "";
+      document.getElementById("SURePassword").value = "";
+      document.getElementById("SUPhoto").value = "";
+    }
+
+    setTimeout(() => {
+      errorMessage.style.display = "none";
+      successMessage.style.display = "none";
+    }, 3000);
+  } catch (error) {
+    console.error("Fetch Error:", error);
+  } finally {
+    document.getElementById("SUPassword").value = "";
+    document.getElementById("SURePassword").value = "";
+  }
 }

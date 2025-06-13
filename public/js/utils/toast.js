@@ -1,5 +1,5 @@
 // toast.js
-window.showToast = function (message, type = "info", duration) {
+export function showToast(message, type = "info", duration = 3000) {
   let bgColor;
 
   switch (type) {
@@ -26,6 +26,11 @@ window.showToast = function (message, type = "info", duration) {
     style: {
       background: bgColor,
       borderRadius: "20px",
+      padding: "1rem 1.5rem",
+      fontSize: "14px",
+      maxWidth: "90%", // prevent overflow
+      wordBreak: "break-word", // allow text to wrap
+      textAlign: "center",
     },
   }).showToast();
-};
+}
