@@ -204,9 +204,6 @@ if(isset($_SESSION['user'])){
     </div>
     <!-- END OF CONTAINER -->
 
-    <!-- JQUERY VENDOR -->
-    <script src="public/vendor/jquery/jquery.min.js"></script>
-
     <!-- UTILS -->
     <script src="public/js/utils/form-utils.js"></script>
 
@@ -214,9 +211,9 @@ if(isset($_SESSION['user'])){
     <script src="public/js/main.js"></script>
 
     <!-- AUTHENTICATION -->
-    <script src="public/js/auth/signin.js"></script>
-    <script src="public/js/utils/toast.js"></script>
-    <script src="public/js/auth/signup.js"></script>
+    <script type="module" src="public/js/auth/signin.js"></script>
+    <!-- <script src="public/js/utils/toast.js"></script> -->
+    <script type="module" src="public/js/auth/signup.js"></script>
 
   </body>
 </html>
