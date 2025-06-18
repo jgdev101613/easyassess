@@ -108,14 +108,28 @@ class SignUpController extends User {
   }
 
   private function userIdTaken() {
-    $result = null;
-
-    if($this->checkDuplicate($this->userId, $this->email)) {
-        $message = 'Student ID or Email already exists!';
-        $result = ['status' => 'error', 'message' => $message];
-    } 
-
-    return $result;
+    try {
+      $duplicates = $this->checkDuplicateDetails($this->userId, $this->email);
+  
+      if (isset($duplicates['status']) && $duplicates['status'] === 'error') {
+        return $duplicates; // return the error directly
+      }
+  
+      if ($duplicates['id'] && $duplicates['email']) {
+        $message = 'Both Student ID and Email already exist!';
+      } elseif ($duplicates['id']) {
+        $message = 'Student ID already exists!';
+      } elseif ($duplicates['email']) {
+        $message = 'Email already exists!';
+      } else {
+        return null; // no duplicates
+      }
+  
+      return ['status' => 'error', 'message' => $message];
+  
+    } catch (\Throwable $th) {
+      return ['status' => 'error', 'message' => 'Check failed: ' . $th->getMessage()];
+    }
   }
 
 }

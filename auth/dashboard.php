@@ -7,14 +7,6 @@
 // SESSION
 require_once "../includes/session/config.session.inc.php";
 
-// $_SESSION['user'] = [
-//   'id' => $fullUser['id'],
-//   'profile_photo' => $fullUser['profile_image'] ?? null,
-//   'email' => $fullUser['email'] ?? null,
-//   'user_type' => $fullUser['user_type'],
-//   'status' => $fullUser['status'],
-//   'is_logged_in' => true,
-// ];
 
 if (!isset($_SESSION['user'])) {
   header('Location: ../index.php');
@@ -60,16 +52,16 @@ $profile_photo = null;
   </header>
 
   <div class="container">
-    <div class="clearance-box" data-allowed="false">
+    <div class="clearance-box" data-allowed="true">
       <div class="clearance-title">Librarian</div>
       <div class="sub-items">View requirements & request signature</div>
       <div class="status">
-        <span class="status-circle completed"></span>
+        <span class="status-circle pending"></span>
         <p>Signed</p>
       </div>
     </div>
 
-    <div class="clearance-box" data-allowed="true"> 
+    <div class="clearance-box" data-allowed="false"> 
       <div class="clearance-title">Office of Student Affairs</div>
       <div class="sub-items">- POD</div>
       <div class="sub-items">- Psychology Test</div>

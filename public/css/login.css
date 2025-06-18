@@ -33,8 +33,6 @@
   display: flex;
   justify-content: space-evenly;
   padding: 10px 0;
-  position: fixed;
-  top: 0;
   width: 100%;
   z-index: 1000;
 }
@@ -106,15 +104,19 @@
   width: 100%;
 }
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* SIGN IN SECTION */
 .section-signin,
 .section-signup {
   width: 100%;
-  height: calc(100vh - 60px); /* Adjust this height based on your header */
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 60px; /* same value as subtracted height */
 }
 
 .section-signin .form-signin,
@@ -147,10 +149,23 @@
   text-align: center;
 }
 
+.section-signup {
+  display: none;
+  margin-bottom: 20px;
+}
+
+.section-signup .signup-bottom-signin {
+  display: flex;
+  justify-content: center;
+}
+
+.section-signup .signup-bottom-signin p {
+  color: black;
+}
+
 .form-body {
   padding: 15px;
   color: #fff;
-  font-family: "Segoe UI", sans-serif;
 }
 
 .form-body-signup {
@@ -261,7 +276,6 @@
 }
 
 .form-body .form-footer {
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -270,13 +284,6 @@
 
 .form-body .form-footer p {
   color: #000;
-}
-
-.form-body .form-footer .divider {
-  width: 90%;
-  height: 1px;
-  background-color: #bdbdbd;
-  margin: 10px 0 20px 0;
 }
 
 .file-upload-wrapper {
@@ -316,6 +323,11 @@
   vertical-align: middle;
 }
 
+.section-signin,
+.section-signup {
+  transition: all 0.4s ease;
+}
+
 /* FOOTER */
 
 .section-footer {
@@ -324,9 +336,6 @@
   padding: 10px;
   text-align: center;
   background-color: rgba(255, 255, 255, 0.7);
-}
-
-.section-footer .footer-links {
 }
 
 .section-footer .footer-links a {
@@ -375,20 +384,11 @@
     display: none; /* Hide header-right on small screens */
   }
 
-  .section-signin {
-    height: calc(100vh - 180px); /* Adjust height for small screens */
-  }
-
   .section-footer {
     display: none;
     width: 100%;
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.7);
-  }
-
-  .section-signin,
-  .section-signup {
-    margin-bottom: 50px;
   }
 
   .section-signin .form-signin,

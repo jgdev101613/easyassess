@@ -44,42 +44,40 @@ if(isset($_SESSION['user'])){
     } 
     ?>
 
-    <!-- START OF CONTAINER -->
-    <div class="container">
+    <!-- BACKGROUND -->
+    <div class="background"> 
+      <img src="assets/saclibg.jpg" alt="Background Image" />
+    </div>
+    <!-- END OF BACKGROUND -->
 
-      <!-- BACKGROUND -->
-      <div class="background"> 
-        <img src="assets/saclibg.jpg" alt="Background Image" />
-      </div>
-      <!-- END OF BACKGROUND -->
-
-      <!-- HEADER SECTION -->
-      <div class="section-header">
-        <div class="header-left">
-          <div class="logo">
-            <img src="assets/saclilogo.png" alt="Sacli Logo" height="64">
-            <div class="logo-text">
-              <h2>Saint Anne College Lucena INC.</h2>
-              <p>Class Beyond Quezon</p>
-            </div>
-            <div class="short-text">
-              <h2>Saint Anne College Lucena INC.</h2>
-              <p>Class Beyond Quezon</p>
-            </div>
+    <!-- HEADER SECTION -->
+    <div class="section-header">
+      <div class="header-left">
+        <div class="logo">
+          <img src="assets/saclilogo.png" alt="Sacli Logo" height="64">
+          <div class="logo-text">
+            <h2>Saint Anne College Lucena INC.</h2>
+            <p>Class Beyond Quezon</p>
+          </div>
+          <div class="short-text">
+            <h2>Saint Anne College Lucena INC.</h2>
+            <p>Class Beyond Quezon</p>
           </div>
         </div>
-        <div class="header-right">
-          <ul>
-            <li><a href="https://sacli.edu.ph/" target="_blank">Official Website</a></li>
-            <li><a href="https://portal.sacli.edu.ph/?admission=1" target="_blank">Admission</a></li>
-            <li><a href="https://sacli.edu.ph/sacliportal" target="_blank">Student Portal</a></li>
-            <li><a href="https://sacli.edu.ph/contact-us/" target="_blank">Contact Us</a></li>
-          </ul>
-        </div>
       </div>
-      <!-- END OF HEADER -->
+      <div class="header-right">
+        <ul>
+          <li><a href="https://sacli.edu.ph/" target="_blank">Official Website</a></li>
+          <li><a href="https://portal.sacli.edu.ph/?admission=1" target="_blank">Admission</a></li>
+          <li><a href="https://sacli.edu.ph/sacliportal" target="_blank">Student Portal</a></li>
+          <li><a href="https://sacli.edu.ph/contact-us/" target="_blank">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- END OF HEADER -->
 
-      <!-- SIGNIN SECTIOn -->
+    <div class="container">
+      <!-- SIGNIN SECTION -->
       <div class="section-signin">
         <form class="form-signin">
           <div class="form-header">
@@ -110,8 +108,10 @@ if(isset($_SESSION['user'])){
               <p><a href="https://sacli.edu.ph/sacliportal" target="_blank">Forgot Password?</a></p>
             </div>
             <div class="form-footer">
-              <div class="divider"></div>
-              <p>Don't have an account? <a href="https://sacli.edu.ph/sacliportal" target="_blank">Sign Up</a></p>
+              <div class="divider-section">
+                <div class="divider"></div>
+              </div>
+              <p>Don't have an account? <a href="#" id="linkToSignUp">Sign Up</a></p>
             </div>
           </div>
         </form>
@@ -130,8 +130,8 @@ if(isset($_SESSION['user'])){
               <div class="success-message" id="signup-message"></div>
             </div>
           </div>
-          <div class="form-body form-body-signup">
 
+          <div class="form-body form-body-signup">
             <div class="signup-top">
               <div class="signup-left">
                 <div class="form-group">
@@ -182,27 +182,30 @@ if(isset($_SESSION['user'])){
             <div class="signup-bottom">
               <button id="buttonSignUp" class="primary-button signup-button" type="button">Sign Up</button>   
             </div>
-              
+            <div class="divider-section">
+              <div class="divider"></div>
+            </div>
+            <div class="signup-bottom-signin">
+              <p>Already have an account? <a href="#" id="linkToSignIn">Sign In</a></p>
+            </div>
           </div>
         </form>
       </div>
       <!-- END OF SIGNUP -->
-
-
-      <!-- FOOTER SECTION -->
-      <div class="section-footer">
-        <div class="footer-links">
-          <a href="https://sacli.edu.ph/privacy-policy/" target="_blank">Privacy Policy</a>
-          <span>|</span>
-          <a href="https://sacli.edu.ph/terms-of-use/" target="_blank">Terms of Use</a>
-          <span>|</span>
-          <a href="https://sacli.edu.ph/sitemap/" target="_blank">Sitemap</a>
-          <p>Design and Developed by <a class="programmer-name" href="https://www.facebook.com/sampalokin219" target="_blank">Jovan</a></p>
-        </div>
-      </div>
-      <!-- END OF FOOTER -->
     </div>
-    <!-- END OF CONTAINER -->
+
+    <!-- FOOTER SECTION -->
+    <div class="section-footer">
+      <div class="footer-links">
+        <a href="https://sacli.edu.ph/privacy-policy/" target="_blank">Privacy Policy</a>
+        <span>|</span>
+        <a href="https://sacli.edu.ph/terms-of-use/" target="_blank">Terms of Use</a>
+        <span>|</span>
+        <a href="https://sacli.edu.ph/sitemap/" target="_blank">Sitemap</a>
+        <p>Design and Developed by <a class="programmer-name" href="https://www.facebook.com/sampalokin219" target="_blank">Jovan</a></p>
+      </div>
+    </div>
+    <!-- END OF FOOTER -->
 
     <!-- UTILS -->
     <script src="public/js/utils/form-utils.js"></script>
@@ -212,8 +215,6 @@ if(isset($_SESSION['user'])){
 
     <!-- AUTHENTICATION -->
     <script type="module" src="public/js/auth/signin.js"></script>
-    <!-- <script src="public/js/utils/toast.js"></script> -->
-    <script type="module" src="public/js/auth/signup.js"></script>
 
   </body>
 </html>

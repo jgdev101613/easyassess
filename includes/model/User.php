@@ -11,27 +11,28 @@ class User {
       $this->db = $db;
   }
 
-  public function checkDuplicate($userId, $email) {
-    $result = null;
+  public function checkDuplicateDetails($userId, $email) {
     try {
-      $stmt = $this->db->prepare('SELECT id FROM users WHERE id = :id OR email = :email;');
+      $stmt = $this->db->prepare('SELECT id, email FROM users WHERE id = :id OR email = :email');
       $stmt->execute([
-        'id' => $userId,
+        'id' => str_replace('-', '', $userId),
         'email' => $email
       ]);
-
-      if ($stmt->rowCount() > 0) {
-        $result = true;
-      } else {
-        $result = false;
+  
+      $result = ['id' => false, 'email' => false];
+  
+      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if ($row['id'] === str_replace('-', '', $userId)) {
+          $result['id'] = true;
+        }
+        if ($row['email'] === $email) {
+          $result['email'] = true;
+        }
       }
-
-      $stmt = null; // Close the statement
+  
       return $result;
-
     } catch (PDOException $e) {
-      $message = 'Database error: ' . $e->getMessage();
-      return ['status' => 'error', 'message' => $message];
+      return ['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()];
     }
   }
 
@@ -139,7 +140,7 @@ class User {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (password_verify($password, $row['password'])) {
           // Set the account details in the session
-          $this->getAccountDetails($userId);
+          $wow = $this->getAccountDetails($userId);
 
           $stmt = $this->db->prepare('
             SELECT status FROM users WHERE id = :id;
@@ -156,7 +157,7 @@ class User {
             return ['status' => 'warning', 'message' => 'Your account is not yet activated. Please contact your administrator'];
           }
 
-          return ['status' => 'success', 'message' => 'Login Successful!'];
+          return ['status' => 'success', 'message' => 'User Found'];
         } else {
           return ['status' => 'error', 'message' => 'Invalid Password!'];
         }
@@ -174,7 +175,6 @@ class User {
 
   }
 
-
   function getAccountDetails($userId) {
     try {
       // Step 1: Get user base info
@@ -183,10 +183,9 @@ class User {
       $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
       if (!$user) return false; // User not found
-
       // Step 2: Merge extra data from student or professor
       if ($user['user_type'] === 'student') {
-          $stmt = $this->db->prepare('SELECT * FROM students WHERE user_id = :id');
+          $stmt = $this->db->prepare('SELECT * FROM students WHERE student_id = :id');
           $stmt->execute([':id' => $userId]);
           $extra = $stmt->fetch(PDO::FETCH_ASSOC);
       } elseif ($user['user_type'] === 'professor') {

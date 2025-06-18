@@ -1,19 +1,23 @@
-$(function () {
-  $("#SUPhoto").on("change", function () {
-    selectFile();
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  const photoInput = document.getElementById("SUPhoto");
+  const toggleButtons = document.querySelectorAll(".toggle-password");
 
-  // Toggle password visibility
-  $(".toggle-password").on("click", function () {
-    const targetId = $(this).data("target");
-    const input = document.getElementById(targetId);
+  if (photoInput) {
+    photoInput.addEventListener("change", selectFile);
+  }
 
-    const type =
-      input.getAttribute("type") === "password" ? "text" : "password";
-    input.setAttribute("type", type);
+  toggleButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.target;
+      const input = document.getElementById(targetId);
 
-    // jQuery way to toggle icon class
-    $(this).toggleClass("fa-eye fa-eye-slash");
+      if (input) {
+        const isPassword = input.type === "password";
+        input.type = isPassword ? "text" : "password";
+        button.classList.toggle("fa-eye");
+        button.classList.toggle("fa-eye-slash");
+      }
+    });
   });
 });
 
@@ -21,11 +25,14 @@ function selectFile() {
   const fileInput = document.getElementById("SUPhoto");
   const fileName = document.getElementById("fileName");
 
-  if (fileInput.files.length > 0) {
-    console.log("Hello");
-    fileName.textContent = fileInput.files[0].name;
-    fileName.title = fileInput.files[0].name;
-  } else {
-    fileName.textContent = "No file selected";
+  if (fileInput && fileName) {
+    if (fileInput.files.length > 0) {
+      const name = fileInput.files[0].name;
+      fileName.textContent = name;
+      fileName.title = name;
+    } else {
+      fileName.textContent = "No file selected";
+      fileName.title = "";
+    }
   }
 }
