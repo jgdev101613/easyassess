@@ -204,9 +204,10 @@ class User {
 
       $_SESSION['user'] = [
           'id' => $fullUser['id'],
-          'profile_photo' => $fullUser['profile_image'] ?? null,
-          'email' => $fullUser['email'] ?? null,
           'user_type' => $fullUser['user_type'],
+          'email' => $fullUser['email'],
+          'profile_image' => $fullUser['profile_image'] ?? null,
+          'created_at' => $fullUser['created_at'],
           'status' => $fullUser['status'],
           'is_logged_in' => true,
       ];

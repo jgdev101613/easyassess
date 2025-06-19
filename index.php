@@ -214,7 +214,7 @@ if(isset($_SESSION['user'])){
     <script src="public/js/main.js"></script>
 
     <!-- AUTHENTICATION -->
-    <script type="module" src="public/js/auth/signin.js"></script>
+    <script type="module" src="public/js/auth/auth.js"></script>
 
   </body>
 </html>

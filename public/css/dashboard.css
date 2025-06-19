@@ -253,6 +253,29 @@ nav svg {
   background: #27ae60;
 }
 
+.requirements-list {
+  margin-top: 20px;
+}
+
+.requirements-list ul {
+  list-style-position: inside;
+  list-style: none;
+  padding-left: 0;
+}
+
+.requirements-list ul li::before {
+  content: "•";
+  color: #000;
+  display: inline-block;
+  width: 1em;
+  margin-left: 0;
+}
+
+.requirements-list p {
+  font-weight: bold;
+  font-style: italic;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {

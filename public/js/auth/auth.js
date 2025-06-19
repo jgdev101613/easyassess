@@ -1,11 +1,123 @@
 import { showToast } from "../utils/toast.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const signUpBtn = document.getElementById("buttonSignUp");
-  signUpBtn.addEventListener("click", register);
+  const btnSignIn = document.getElementById("buttonSignIn");
+  const btnSignOut = document.getElementById("buttonSignOut");
+  const btnSignUp = document.getElementById("buttonSignUp");
+
+  btnSignIn.addEventListener("click", () => {
+    console.log("Sign In Button Clicked");
+    signIn();
+  });
+
+  btnSignUp.addEventListener("click", () => {
+    console.log("Sign Up Button Clicked");
+    signUp();
+  });
+
+  if (btnSignOut) {
+    btnSignOut.addEventListener("click", () => {
+      console.log("Sign Out Button Clicked");
+      signOut();
+    });
+  }
 });
 
-async function register() {
+async function signIn() {
+  const signinUserId = document.getElementById("SIUserId").value;
+  const signinPassword = document.getElementById("SIPassword").value;
+  const errorMessage = document.getElementById("errorMessage");
+
+  // Reset borders
+  document.getElementById("StudentIDGroup").style.border = "";
+  document.getElementById("StudentPasswordGroup").style.border = "";
+
+  let hasError = false;
+
+  if (signinUserId === "") {
+    document.getElementById("StudentIDGroup").style.border = "1px solid red";
+    hasError = true;
+  }
+
+  if (signinPassword === "") {
+    document.getElementById("StudentPasswordGroup").style.border =
+      "1px solid red";
+    hasError = true;
+  }
+
+  if (hasError) return;
+
+  // Show loading
+  document.getElementById("loadingMessage").style.display = "flex";
+
+  try {
+    const res = await fetch("includes/api/signin.api.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        signinUserId,
+        signinPassword,
+      }),
+    });
+
+    const data = await res.json();
+    console.log("Fetch Response:", data);
+
+    const message = data.message;
+
+    if (data.status === "success") {
+      showToast(message, "success", 2000);
+      setTimeout(() => {
+        window.location.href = "dashboard.php";
+      }, 2000);
+    } else if (data.status === "warning") {
+      showToast(message, "warning", 5000);
+    } else if (data.status === "error") {
+      showToast(message, "error", 4000);
+    }
+
+    setTimeout(() => {
+      errorMessage.style.display = "none";
+    }, 3000);
+  } catch (err) {
+    console.error("Fetch Error:", err);
+  } finally {
+    document.getElementById("loadingMessage").style.display = "none";
+  }
+}
+
+async function signOut() {
+  try {
+    const res = await fetch("includes/signout/signout.inc.php");
+    const data = await res.text();
+
+    console.log("Fetch Response:", data);
+
+    const signinMessage = document.getElementById("signinMessage");
+    if (signinMessage) {
+      signinMessage.innerHTML = data;
+      signinMessage.style.display = "block";
+    }
+
+    let parsedData;
+    try {
+      parsedData = JSON.parse(data);
+      console.log(parsedData.message);
+    } catch (err) {
+      console.warn("Response was not JSON:", err);
+    }
+
+    if (data.includes("Logged out successfully!")) {
+      window.location = "index.php";
+    }
+  } catch (err) {
+    console.error("Fetch Error:", err);
+  }
+}
+
+async function signUp() {
   const registerUserId = document.getElementById("SUUserId").value;
   const registerFirstName = document.getElementById("SUFirstName").value;
   const registerMiddleName = document.getElementById("SUMiddleName").value;
