@@ -1,14 +1,9 @@
-<!-- 
-  Copyright © 2025 John Gregg Felicisimo
-  All rights reserved. Unauthorized use is prohibited.
--->
-
 <?php 
 // SESSION
 require_once "includes/session/config.session.inc.php";
 
 if(isset($_SESSION['user'])){
-  header('Location: auth/dashboard.php');
+  header('Location: dashboard.php');
 } 
 ?>
 

@@ -15,7 +15,7 @@
 	define('DB_USER', 'root');
 	
 	// DB password
-	define('DB_PASSWORD', 'jgadmin');
+	define('DB_PASSWORD', '');
 	
 	// DB name
 	define('DB_NAME', 'easyassess');

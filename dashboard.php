@@ -1,8 +1,3 @@
-<!-- 
-  Copyright © 2025 John Gregg Felicisimo
-  All rights reserved. Unauthorized use is prohibited.
--->
-
 <?php
 // SESSION
 require_once "includes/session/config.session.inc.php";
@@ -27,6 +22,7 @@ $profile_photo = $_SESSION['user']['profile_image'];
     <!-- CSS -->
     <link rel="stylesheet" href="public/css/main.css" />
     <link rel="stylesheet" href="public/css/loading.css" />
+    <link rel="stylesheet" href="public/css/component.css" />
     <link rel="stylesheet" href="public/css/dashboard.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
