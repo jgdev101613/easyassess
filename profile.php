@@ -120,8 +120,7 @@ $profile_photo = $_SESSION['user']['profile_image'];
   include_once "includes/components/navigation.html";
   ?>
 
-  <script src="public/js/main.js "></script>
-  <script src="public/js/utils/profile.js"></script>
+  <script type="module" src="public/js/utils/profile.js"></script>
 
   <!-- UPDATE PROFILE JS -->
   <script type="module" src="public/js/auth/updateProfile.js"></script>

@@ -43,6 +43,7 @@ class EditProfileController {
         return ['status' => 'error', 'message' => 'Invalid user type'];
       }
 
+      
       // 3. Update student or professor table
       $stmtProfile = $this->db->prepare("
         UPDATE $table SET 
@@ -50,9 +51,9 @@ class EditProfileController {
           middle_name = :middle_name,
           last_name = :last_name,
           course = :course,
-          year = :year,
+          year_level = :year_level,
           section = :section,
-          department = :department
+          prog_department_id = :department
         WHERE student_id = :id OR user_id = :id
       ");
 
@@ -61,7 +62,7 @@ class EditProfileController {
         ':middle_name' => $this->data['middle_name'],
         ':last_name'   => $this->data['last_name'],
         ':course'      => $this->data['course'],
-        ':year'        => $this->data['year'],
+        ':year_level'        => $this->data['year_level'],
         ':section'     => $this->data['section'],
         ':department'  => $this->data['department'],
         ':id'          => $this->id

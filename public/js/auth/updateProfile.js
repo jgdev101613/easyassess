@@ -36,7 +36,7 @@ async function updateProfile() {
       showToast(data.message, "success", 3000);
       setTimeout(() => {
         location.reload(); // or close modal manually
-      }, 3000);
+      }, 2000);
     } else if (data.status === "warning") {
       showToast(data.message, "warning", 5000);
     } else {

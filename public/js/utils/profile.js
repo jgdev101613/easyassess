@@ -1,5 +1,9 @@
+import { navigation } from "./navigation.js";
+
 // When profile page is loaded fetch the necessary data
 document.addEventListener("DOMContentLoaded", () => {
+  navigation();
+
   const userId = getUserId();
   if (!userId) {
     console.error("User ID is missing.");
@@ -80,9 +84,7 @@ document.getElementById("closeProfileModal").addEventListener("click", () => {
 
 window.addEventListener("click", (e) => {
   const profileModal = document.getElementById("editProfileModal");
-  const passwordModal = document.getElementById("changePasswordModal");
   if (e.target === profileModal) profileModal.style.display = "none";
-  if (e.target === passwordModal) passwordModal.style.display = "none";
 });
 
 document.getElementById("editPhotoBtn").addEventListener("click", () => {
@@ -100,13 +102,13 @@ document.getElementById("photoInput").addEventListener("change", function () {
   }
 });
 
-document.getElementById("changePasswordBtn").addEventListener("click", () => {
-  document.getElementById("changePasswordModal").style.display = "block";
-});
+// document.getElementById("changePasswordBtn").addEventListener("click", () => {
+//   document.getElementById("changePasswordModal").style.display = "block";
+// });
 
-document.getElementById("closePasswordModal").addEventListener("click", () => {
-  document.getElementById("changePasswordModal").style.display = "none";
-});
+// document.getElementById("closePasswordModal").addEventListener("click", () => {
+//   document.getElementById("changePasswordModal").style.display = "none";
+// });
 
 // View full profile photo
 document.getElementById("profileImage").addEventListener("click", () => {
