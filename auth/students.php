@@ -1,6 +1,6 @@
 <div class="container">
     <div class="clearance-box" data-allowed="true">
-      <div class="clearance-title">Librarian</div>
+      <div class="clearance-title" data-departmentid="LIB2025">Librarian</div>
       <div class="sub-items">View requirements & request signature</div>
       <div class="status">
         <span class="status-circle pending"></span>
@@ -9,7 +9,7 @@
     </div>
 
     <div class="clearance-box" data-allowed="false"> 
-      <div class="clearance-title">Office of Student Affairs</div>
+      <div class="clearance-title" data-departmentid="OSA2025">Office of Student Affairs</div>
       <div class="sub-items">- POD</div>
       <div class="sub-items">- Psychology Test</div>
       <div class="sub-items">- Foundation</div>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="clearance-box" data-allowed="false">
-      <div class="clearance-title">Dean</div>
+      <div class="clearance-title" data-departmentid="DEAN2025">Dean</div>
       <div class="sub-items">View requirements & request signature</div>
       <div class="status">
         <span class="status-circle pending"></span>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="clearance-box" data-allowed="false">
-      <div class="clearance-title">Registrar</div>
+      <div class="clearance-title" data-departmentid="REG2025">Registrar</div>
       <div class="sub-items">View requirements & request signature</div>
       <div class="status">
         <span class="status-circle pending"></span>
@@ -38,7 +38,7 @@
     </div>
 
     <div class="clearance-box" data-allowed="false">
-      <div class="clearance-title">Accounting</div>
+      <div class="clearance-title" data-departmentid="ACC2025" >Accounting</div>
       <div class="sub-items">View requirements & request signature</div>
       <div class="status">
         <span class="status-circle pending"></span>
@@ -54,15 +54,14 @@
       <h2>Submit Requirements</h2>
       <form id="requirementForm">
         <label for="attachment">Upload Attachment:</label>
-        <input type="file" id="attachment" name="attachment" required>
+        <input type="file" data-dapartmentid="" data-department="" id="attachment" name="attachment" required>
         <button type="submit">Submit</button>
       </form>
       <div class="requirements-list">
-        <h3>Requirements:</h3>
-        <ul>
-          <li>None</li>
-        </ul>
-        <p>NOTE: If there's no requirements just click submit to request to be signed.</p>
+        <h3>REMARKS:</h3>
+        <p id="clearance-remarks">Remarks here.</p>
+        <br>
+        <p class="note">NOTE: If there's no remarks just click submit and if you need to return something please visit the particular department.</p>
       </div>
     </div>
   </div>

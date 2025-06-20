@@ -45,14 +45,19 @@ $profile_photo = $_SESSION['user']['profile_image'];
   if ($user_type === "student") {
     include_once "auth/students.php";
   } 
+
+  if ($user_type === "professor") {
+    include_once "auth/professors.php";
+  }
   
-  if ($user_type === "Admin") {
-    echo "Admin";
+  if ($user_type === "admin") {
+    include_once "auth/admin.php";
   }
   // Navigation
   include_once "includes/components/navigation.html";
   ?>
 
+  <!-- Main Script -->
   <script src="public/js/main.js "></script>
     
 </body>

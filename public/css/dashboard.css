@@ -27,6 +27,12 @@ body {
   }
 }
 
+.clearance-box[data-allowed="complete"] {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: default;
+}
+
 .clearance-title {
   font-size: 1.1rem;
   font-weight: 600;
@@ -167,7 +173,11 @@ body {
   margin-left: 0;
 }
 
-.requirements-list p {
+.requirements-list p.note {
+  background: #faffe6;
+  border-radius: 6px;
+  border-left: 6px solid rgb(255, 255, 67);
+  padding: 5px;
   font-weight: bold;
   font-style: italic;
 }

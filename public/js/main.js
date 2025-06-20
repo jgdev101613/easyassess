@@ -52,22 +52,112 @@ document.querySelectorAll(".close-btn").forEach((btn) => {
   });
 });
 
-// OK button for invalid modal
-document.querySelector(".ok-btn").addEventListener("click", () => {
-  invalidModal.style.display = "none";
+// Close buttons
+document.querySelectorAll(".ok-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    requirementModal.style.display = "none";
+    invalidModal.style.display = "none";
+  });
 });
 
-// Example logic for each clearance box
-document.querySelectorAll(".clearance-box").forEach((box) => {
-  box.addEventListener("click", () => {
-    // Placeholder: Replace with actual logic
-    const canAccess = box.getAttribute("data-allowed") === "true";
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const response = await fetch(
+      "includes/api/fetch-clearance-status.api.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    if (canAccess) {
+    const data = await response.json();
+    if (data.error) throw new Error(data.error);
+
+    const deptStatuses = data;
+    let allowNext = true;
+
+    document.querySelectorAll(".clearance-box").forEach((box) => {
+      const titleEl = box.querySelector(".clearance-title");
+      const deptId = titleEl.dataset.departmentid;
+
+      const deptData = deptStatuses.find((d) => d.department_id === deptId);
+      const isApproved = deptData?.status === "approved";
+
+      // Allow logic
+      if (isApproved) {
+        box.setAttribute("data-allowed", "complete");
+      } else if (allowNext) {
+        box.setAttribute("data-allowed", "true");
+        allowNext = false; // only one "true" at a time
+      } else {
+        box.setAttribute("data-allowed", "false");
+      }
+
+      // UI update
+      const statusText = box.querySelector(".status p");
+      const statusCircle = box.querySelector(".status-circle");
+
+      if (isApproved) {
+        statusText.textContent = "Approved";
+        statusCircle.classList.remove("pending");
+        statusCircle.classList.add("completed");
+      } else {
+        statusText.textContent = "Pending";
+        statusCircle.classList.remove("completed");
+        statusCircle.classList.add("pending");
+      }
+    });
+  } catch (err) {
+    console.error("Failed to load clearance status:", err);
+  }
+});
+
+document.querySelectorAll(".clearance-box").forEach((box) => {
+  box.addEventListener("click", async () => {
+    const canAccess = box.getAttribute("data-allowed") === "true";
+    const department =
+      box.querySelector(".clearance-title").dataset.departmentid;
+
+    const departmentName = box
+      .querySelector(".clearance-title")
+      .textContent.trim();
+
+    const allowedState = box.getAttribute("data-allowed");
+
+    if (allowedState === "true") {
+      // Set modal content
+      document.querySelector("#attachment").dataset.department = department;
+      requirementModal.querySelector(
+        "h2"
+      ).textContent = `Submit Requirements to ${departmentName}`;
+
+      // Fetch remarks
+      try {
+        const response = await fetch("includes/api/fetch-remarks.api.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ department }),
+        });
+
+        const data = await response.json();
+        const remarks = data?.remarks || "No remarks available.";
+        document.getElementById("clearance-remarks").textContent = remarks;
+      } catch (error) {
+        console.error("Failed to fetch remarks:", error);
+        document.getElementById("clearance-remarks").textContent =
+          "Error loading remarks.";
+      }
+
       requirementModal.style.display = "block";
-    } else if (!canAccess) {
+    } else if (allowedState === "false") {
       invalidModal.style.display = "block";
     }
+
+    // If allowedState === "complete" — do nothing
   });
 });
 
