@@ -48,6 +48,12 @@ $user_type = $_SESSION['user']['user_type'];
         <p>Manage clearance deadlines, academic terms, and backups.</p>
       </div>
     <?php endif; ?>
+
+    <div id="buttonSignOut" class="settings-card">
+      <i class="fa-solid fa-right-from-bracket icon"></i>
+      <h3>Logout</h3>
+      <p>Logout your account.</p>
+    </div>
   </div>
 </div>
 
@@ -82,6 +88,10 @@ $user_type = $_SESSION['user']['user_type'];
     }
   });
 </script>
+
+
+<!-- AUTHENTICATION -->
+<script type="module" src="public/js/auth/auth.js"></script>
 
 </body>
 </html>

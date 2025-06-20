@@ -2,18 +2,22 @@ import { showToast } from "../utils/toast.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const btnSignIn = document.getElementById("buttonSignIn");
-  const btnSignOut = document.getElementById("buttonSignOut");
   const btnSignUp = document.getElementById("buttonSignUp");
+  const btnSignOut = document.getElementById("buttonSignOut");
 
-  btnSignIn.addEventListener("click", () => {
-    console.log("Sign In Button Clicked");
-    signIn();
-  });
+  if (btnSignIn) {
+    btnSignIn.addEventListener("click", () => {
+      console.log("Sign In Button Clicked");
+      signIn();
+    });
+  }
 
-  btnSignUp.addEventListener("click", () => {
-    console.log("Sign Up Button Clicked");
-    signUp();
-  });
+  if (btnSignUp) {
+    btnSignUp.addEventListener("click", () => {
+      console.log("Sign Up Button Clicked");
+      signUp();
+    });
+  }
 
   if (btnSignOut) {
     btnSignOut.addEventListener("click", () => {
@@ -90,16 +94,10 @@ async function signIn() {
 
 async function signOut() {
   try {
-    const res = await fetch("includes/signout/signout.inc.php");
+    const res = await fetch("includes/api/signout.api.php");
     const data = await res.text();
 
     console.log("Fetch Response:", data);
-
-    const signinMessage = document.getElementById("signinMessage");
-    if (signinMessage) {
-      signinMessage.innerHTML = data;
-      signinMessage.style.display = "block";
-    }
 
     let parsedData;
     try {

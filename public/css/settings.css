@@ -45,6 +45,11 @@
   color: #555;
 }
 
+.settings-card.logout {
+  display: flex;
+  gap: 10px;
+}
+
 .modal {
   display: none;
   position: fixed;
