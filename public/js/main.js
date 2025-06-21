@@ -1,6 +1,7 @@
 const requirementModal = document.getElementById("requirementModal");
 const invalidModal = document.getElementById("invalidModal");
 
+// Submit Requirements
 document
   .getElementById("requirementForm")
   .addEventListener("submit", async (e) => {
@@ -41,65 +42,7 @@ document
     }
   });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const signInSection = document.querySelector(".section-signin");
-  const signUpSection = document.querySelector(".section-signup");
-  const linkToSignUp = document.getElementById("linkToSignUp");
-  const linkToSignIn = document.getElementById("linkToSignIn");
-
-  // Add basic slide animation using classes
-  const slideOut = (el) => {
-    el.style.opacity = 0;
-    el.style.transform = "translateX(-50px)";
-    el.style.transition = "all 0.4s ease";
-    setTimeout(() => (el.style.display = "none"), 400);
-  };
-
-  const slideIn = (el) => {
-    el.style.display = "flex";
-    el.style.opacity = 0;
-    el.style.transform = "translateX(50px)";
-    el.style.transition = "none";
-    requestAnimationFrame(() => {
-      el.style.transition = "all 0.4s ease";
-      el.style.opacity = 1;
-      el.style.transform = "translateX(0)";
-    });
-  };
-
-  if (linkToSignUp) {
-    linkToSignUp.addEventListener("click", (e) => {
-      e.preventDefault();
-      slideOut(signInSection);
-      setTimeout(() => slideIn(signUpSection), 400);
-    });
-  }
-
-  if (linkToSignIn) {
-    linkToSignIn.addEventListener("click", (e) => {
-      e.preventDefault();
-      slideOut(signUpSection);
-      setTimeout(() => slideIn(signInSection), 400);
-    });
-  }
-});
-
-// Close buttons
-document.querySelectorAll(".close-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    requirementModal.style.display = "none";
-    invalidModal.style.display = "none";
-  });
-});
-
-// Close buttons
-document.querySelectorAll(".ok-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    requirementModal.style.display = "none";
-    invalidModal.style.display = "none";
-  });
-});
-
+// Fetch clearance status
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const response = await fetch(
@@ -125,6 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const deptData = deptStatuses.find((d) => d.department_id === deptId);
       const isApproved = deptData?.status === "approved";
       const needSubmission = deptData?.status === "needs_submission";
+      const pending = deptData?.status === "pending";
 
       // Allow logic
       if (isApproved) {
@@ -144,14 +88,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         statusText.textContent = "Approved";
         statusCircle.classList.remove("pending");
         statusCircle.classList.add("completed");
-      } else if (needSubmission) {
-        statusText.textContent = "Submit Requirements";
-        statusCircle.classList.remove("pending");
-        statusCircle.classList.add("need-submission");
-      } else {
+      } else if (pending) {
         statusText.textContent = "Pending";
         statusCircle.classList.remove("completed");
         statusCircle.classList.add("pending");
+      } else {
+        statusText.textContent = "Submit Requirements";
+        statusCircle.classList.remove("pending");
+        statusCircle.classList.add("need-submission");
       }
     });
   } catch (err) {
@@ -203,6 +147,22 @@ document.querySelectorAll(".clearance-box").forEach((box) => {
     }
 
     // If allowedState === "complete" — do nothing
+  });
+});
+
+// Close buttons
+document.querySelectorAll(".close-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    requirementModal.style.display = "none";
+    invalidModal.style.display = "none";
+  });
+});
+
+// Close buttons
+document.querySelectorAll(".ok-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    requirementModal.style.display = "none";
+    invalidModal.style.display = "none";
   });
 });
 

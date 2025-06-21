@@ -15,6 +15,8 @@
 }
 
 .notification-card {
+  position: relative;
+  padding-left: 20px;
   background: white;
   display: flex;
   align-items: center;
@@ -95,6 +97,28 @@
   font-size: 24px;
   cursor: pointer;
   color: #888;
+}
+
+/* NOTIF UNREAD */
+.notification-card[data-read="0"] {
+  border-left: 6px solid #3498db; /* blue indicator */
+  background-color: #f0f8ff;
+}
+
+.notification-card[data-read="0"] .message,
+.notification-card[data-read="0"] .date {
+  font-weight: bold;
+}
+
+.notification-card[data-read="0"]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: #3498db;
+  border-radius: 50%;
+  position: absolute;
+  top: 15px;
+  left: 10px;
 }
 
 @keyframes fadeIn {

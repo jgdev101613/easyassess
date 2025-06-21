@@ -206,7 +206,7 @@ if(isset($_SESSION['user'])){
     <script src="public/js/utils/form-utils.js"></script>
 
     <!-- MAIN JS -->
-    <script src="public/js/main.js"></script>
+    <script src="public/js/login.js"></script>
 
     <!-- AUTHENTICATION -->
     <script type="module" src="public/js/auth/auth.js"></script>

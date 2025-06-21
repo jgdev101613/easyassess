@@ -30,7 +30,7 @@ if (!isset($_SESSION['user'])) {
 
     <div class="notifications-list">
       <!-- Example Notification -->
-      <div class="notification-card" data-title="Account Approved" data-message="Congratulations! Your student account has been approved by the admin." data-date="June 18, 2025 10:32 AM">
+      <div class="notification-card" data-read="0"  data-title="Account Approved" data-message="Congratulations! Your student account has been approved by the admin." data-date="June 18, 2025 10:32 AM">
         <div class="icon"><i class="fas fa-user-check"></i></div>
         <div class="details">
           <div class="message">Your account has been approved</div>
@@ -38,7 +38,7 @@ if (!isset($_SESSION['user'])) {
         </div>
       </div>
 
-      <div class="notification-card" data-title="Library Reminder" data-message="You have books due next week. Please return them before June 25 to avoid penalty." data-date="June 17, 2025 2:45 PM">
+      <div class="notification-card" data-read="0" data-title="Library Reminder" data-message="You have books due next week. Please return them before June 25 to avoid penalty." data-date="June 17, 2025 2:45 PM">
         <div class="icon"><i class="fas fa-book"></i></div>
         <div class="details">
           <div class="message">Reminder: Book due soon</div>
@@ -62,10 +62,8 @@ if (!isset($_SESSION['user'])) {
 
   <?php include_once "includes/components/navigation.html"; ?>
 
-  <!-- MAIN JS -->
-  <script src="public/js/main.js"></script>
   <!-- NOTIF JS -->
-  <script src="public/js/utils/notification.js"></script>
+  <script type="module" src="public/js/utils/notification.js"></script>
 
 </body>
 </html>

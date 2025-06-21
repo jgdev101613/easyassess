@@ -60,6 +60,10 @@ nav {
   transition: color 0.3s;
 }
 
+.notification-badge {
+  position: relative;
+}
+
 .nav-link .icon {
   width: 22px;
   height: 22px;
@@ -84,6 +88,20 @@ nav {
 
 .nav-link.active .active-indicator {
   opacity: 1;
+}
+
+.notif-badge {
+  background-color: red;
+  color: white;
+  font-size: 0.5rem;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  z-index: 100;
+  display: inline-block;
 }
 
 /* nav a {

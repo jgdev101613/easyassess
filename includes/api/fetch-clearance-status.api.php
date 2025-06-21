@@ -2,7 +2,8 @@
 declare(strict_types=1);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  session_start();
+  
+  require_once '../session/config.session.inc.php';
   require_once '../database/dbh.inc.php';
   require_once '../model/Clearance.php';
 

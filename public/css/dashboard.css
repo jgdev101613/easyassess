@@ -27,6 +27,10 @@ body {
   }
 }
 
+.clearance-box[data-allowed="false"] {
+  border: 1px solid red;
+}
+
 .clearance-box[data-allowed="complete"] {
   pointer-events: none;
   opacity: 0.6;
