@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2025 at 06:36 PM
+-- Generation Time: Jun 21, 2025 at 09:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,8 +31,9 @@ USE `easyassess`;
 
 CREATE TABLE `clearance_requirements` (
   `id` int(11) NOT NULL,
+  `student_id` varchar(50) NOT NULL,
   `department_id` varchar(100) DEFAULT NULL,
-  `title` varchar(100) DEFAULT NULL,
+  `attachment` varchar(1000) NOT NULL,
   `description` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -40,8 +41,8 @@ CREATE TABLE `clearance_requirements` (
 -- Dumping data for table `clearance_requirements`
 --
 
-INSERT INTO `clearance_requirements` (`id`, `department_id`, `title`, `description`) VALUES
-(1, 'OSA-F2025', 'Foundation Attendance', 'Submit your foundation attendance sheet.');
+INSERT INTO `clearance_requirements` (`id`, `student_id`, `department_id`, `attachment`, `description`) VALUES
+(1, '2301000555', 'OSA-F2025', 'Foundation Attendance', 'Submit your foundation attendance sheet.');
 
 -- --------------------------------------------------------
 
@@ -51,12 +52,19 @@ INSERT INTO `clearance_requirements` (`id`, `department_id`, `title`, `descripti
 
 CREATE TABLE `clearance_status` (
   `id` int(11) NOT NULL,
-  `student_id` int(11) DEFAULT NULL,
+  `student_id` varchar(50) DEFAULT NULL,
   `department_id` varchar(255) DEFAULT NULL,
   `status` enum('pending','needs_submission','approved') DEFAULT 'pending',
   `remarks` text DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `clearance_status`
+--
+
+INSERT INTO `clearance_status` (`id`, `student_id`, `department_id`, `status`, `remarks`, `updated_at`) VALUES
+(2, '2301000555', 'LIB2025', 'needs_submission', 'Please return Technology World (Book 9832TE)', '2025-06-21 05:06:58');
 
 -- --------------------------------------------------------
 
@@ -239,7 +247,8 @@ INSERT INTO `users` (`id`, `user_type`, `email`, `password`, `profile_image`, `c
 --
 ALTER TABLE `clearance_requirements`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `department_id` (`department_id`);
+  ADD KEY `department_id` (`department_id`),
+  ADD KEY `fk_clearance_req_student_id` (`student_id`);
 
 --
 -- Indexes for table `clearance_status`
@@ -323,13 +332,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `clearance_requirements`
 --
 ALTER TABLE `clearance_requirements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `clearance_status`
 --
 ALTER TABLE `clearance_status`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `enrollments`
@@ -363,14 +372,15 @@ ALTER TABLE `subjects`
 -- Constraints for table `clearance_requirements`
 --
 ALTER TABLE `clearance_requirements`
-  ADD CONSTRAINT `fk_clearance_req_dep_id` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_clearance_req_dep_id` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_clearance_req_student_id` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `clearance_status`
 --
 ALTER TABLE `clearance_status`
-  ADD CONSTRAINT `clearance_status_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_clearance_status_dep_id` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_clearance_status_dep_id` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_clearance_student_id` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `enrollments`
