@@ -1,6 +1,46 @@
 const requirementModal = document.getElementById("requirementModal");
 const invalidModal = document.getElementById("invalidModal");
 
+document
+  .getElementById("requirementForm")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const input = document.getElementById("attachment");
+    const departmentId = input.dataset.department;
+
+    const files = input.files;
+    if (files.length === 0) {
+      alert("Please upload at least one file.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("department_id", departmentId);
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append("attachments[]", files[i]);
+    }
+
+    try {
+      const response = await fetch("includes/api/submit-requirements.api.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        alert("Requirements submitted successfully!");
+        requirementModal.style.display = "none";
+      } else {
+        alert("Submission failed: " + (data.message || "Unknown error."));
+      }
+    } catch (err) {
+      console.error("Upload failed:", err);
+      alert("Something went wrong. Try again later.");
+    }
+  });
+
 document.addEventListener("DOMContentLoaded", () => {
   const signInSection = document.querySelector(".section-signin");
   const signUpSection = document.querySelector(".section-signup");
@@ -84,6 +124,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const deptData = deptStatuses.find((d) => d.department_id === deptId);
       const isApproved = deptData?.status === "approved";
+      const needSubmission = deptData?.status === "needs_submission";
 
       // Allow logic
       if (isApproved) {
@@ -103,6 +144,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         statusText.textContent = "Approved";
         statusCircle.classList.remove("pending");
         statusCircle.classList.add("completed");
+      } else if (needSubmission) {
+        statusText.textContent = "Submit Requirements";
+        statusCircle.classList.remove("pending");
+        statusCircle.classList.add("need-submission");
       } else {
         statusText.textContent = "Pending";
         statusCircle.classList.remove("completed");

@@ -54,8 +54,8 @@
       <h2>Submit Requirements</h2>
       <form id="requirementForm">
         <label for="attachment">Upload Attachment:</label>
-        <input type="file" data-dapartmentid="" data-department="" id="attachment" name="attachment" required>
-        <button type="submit">Submit</button>
+        <input type="file" data-dapartmentid="" data-department="" id="attachment" name="attachments[]" multiple required>
+        <button id="btnSubmitRequirements">Submit</button>
       </form>
       <div class="requirements-list">
         <h3>REMARKS:</h3>

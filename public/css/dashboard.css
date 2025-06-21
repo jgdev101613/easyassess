@@ -70,6 +70,9 @@ body {
 .status-circle.rejected {
   background-color: red;
 }
+.status-circle.need-submission {
+  background-color: red;
+}
 
 /* Blinking heartbeat animation */
 @keyframes pulse {
