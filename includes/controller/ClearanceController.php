@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once '../model/Clearance.php';
 
-class ClearanceRequirements extends Clearance {
+class ClearanceController extends Clearance {
   private string $studentId;
   private string $departmentId;
   private array $files;
@@ -50,5 +50,9 @@ class ClearanceRequirements extends Clearance {
     }
 
     return $storedPaths;
+  }
+
+  public function getClearanceSubmissions($department_id) {
+    return $this->fetchClearanceByDepartment($department_id);
   }
 }

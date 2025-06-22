@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
-session_start();
-
+require_once '../session/config.session.inc.php';
 require_once '../database/dbh.inc.php';
-require_once '../controller/ClearanceRequirements.php';
+require_once '../controller/ClearanceController.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $studentId = $_SESSION['user']['id'] ?? null;
@@ -15,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
   }
 
-  $controller = new ClearanceRequirements($conn, $studentId, $departmentId, $attachments);
+  $controller = new ClearanceController($conn, $studentId, $departmentId, $attachments);
   $result = $controller->submit();
 
   echo json_encode($result);

@@ -84,4 +84,44 @@ class Clearance {
     
   }
 
+  public function fetchClearanceByDepartment($department_id) {
+    // Step 1: Get clearance statuses
+    $stmt = $this->db->prepare("
+      SELECT cs.student_id, cs.status, cs.updated_at,
+             s.first_name, s.middle_name, s.last_name, s.course, s.year_level, s.section
+      FROM clearance_status cs
+      JOIN students s ON cs.student_id = s.student_id
+      WHERE cs.department_id = ?
+      ORDER BY cs.updated_at DESC
+    ");
+    $stmt->execute([$department_id]);
+    $clearances = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Step 2: For each clearance, fetch their attachments
+    foreach ($clearances as &$clr) {
+      $clr['full_name'] = $clr['first_name'] . ' ' . $clr['middle_name'] . ' ' . $clr['last_name'];
+    
+      $attachmentsStmt = $this->db->prepare("
+        SELECT attachment FROM clearance_requirements
+        WHERE student_id = ? AND department_id = ?
+      ");
+      $attachmentsStmt->execute([$clr['student_id'], $department_id]);
+      $attachmentsRaw = $attachmentsStmt->fetchAll(PDO::FETCH_ASSOC);
+    
+      $clr['attachments'] = [];
+    
+      foreach ($attachmentsRaw as $row) {
+        $files = explode(',', $row['attachment']); // split by comma
+        foreach ($files as $file) {
+          $trimmed = trim($file);
+          if ($trimmed !== '') {
+            $clr['attachments'][] = ['attachment' => $trimmed];
+          }
+        }
+      }
+    }
+
+    return $clearances;
+  }
+
 }

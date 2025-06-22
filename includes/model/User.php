@@ -189,10 +189,10 @@ class User {
           $stmt->execute([':id' => $userId]);
           $extra = $stmt->fetch(PDO::FETCH_ASSOC);
       } elseif ($user['user_type'] === 'professor') {
-          $stmt = $this->db->prepare('SELECT * FROM professors WHERE user_id = :id');
+          $stmt = $this->db->prepare('SELECT * FROM professors WHERE employee_id = :id');
           $stmt->execute([':id' => $userId]);
           $extra = $stmt->fetch(PDO::FETCH_ASSOC);
-      } else {
+      } else {  
           $extra = [];
       }
 
@@ -207,6 +207,7 @@ class User {
           'user_type' => $fullUser['user_type'],
           'email' => $fullUser['email'],
           'profile_image' => $fullUser['profile_image'] ?? null,
+          'department_id' => $fullUser['department'] ?? null,
           'created_at' => $fullUser['created_at'],
           'status' => $fullUser['status'],
           'is_logged_in' => true,

@@ -2,6 +2,8 @@
 // SESSION
 require_once "includes/session/config.session.inc.php";
 
+echo $_SESSION['user'];
+
 if(isset($_SESSION['user'])){
   header('Location: dashboard.php');
 } 

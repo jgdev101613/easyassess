@@ -76,3 +76,6 @@
     </div>
   </div>
 </div>
+
+<!-- Main Script -->
+<script src="public/js/main.js "></script>

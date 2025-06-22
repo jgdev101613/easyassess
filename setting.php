@@ -73,25 +73,9 @@ $user_type = $_SESSION['user']['user_type'];
 
 <?php include_once "includes/components/navigation.html"; ?>
 
-<script>
-  document.getElementById('openPasswordModal').addEventListener('click', () => {
-    document.getElementById('passwordModal').style.display = 'block';
-  });
-
-  document.getElementById('closePasswordModal').addEventListener('click', () => {
-    document.getElementById('passwordModal').style.display = 'none';
-  });
-
-  window.addEventListener('click', (e) => {
-    if (e.target === document.getElementById('passwordModal')) {
-      document.getElementById('passwordModal').style.display = 'none';
-    }
-  });
-</script>
-
-
 <!-- AUTHENTICATION -->
 <script type="module" src="public/js/auth/auth.js"></script>
+<script type="module" src="public/js/utils/setting.js"></script>
 
 </body>
 </html>

@@ -57,8 +57,7 @@ $profile_photo = $_SESSION['user']['profile_image'];
   include_once "includes/components/navigation.html";
   ?>
 
-  <!-- Main Script -->
-  <script src="public/js/main.js "></script>
+  
     
 </body>
 </html>
