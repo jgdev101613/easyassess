@@ -1,5 +1,3 @@
-
-
 <div class="container">
   <!-- PROFESSOR DASHBOARD -->
   <div class="search-bar">
