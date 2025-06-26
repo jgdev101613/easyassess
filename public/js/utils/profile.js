@@ -49,17 +49,11 @@ function populateProfileForm(data) {
   document.querySelector("input[placeholder='Last Name']").value =
     data.last_name || "";
   document.querySelector("input[placeholder='Email']").value = data.email || "";
-  document.querySelector("input[placeholder='Course']").value =
-    data.course || "";
-  document.querySelector("input[placeholder='Year']").value =
-    data.year_level || "";
-  document.querySelector("input[placeholder='Section']").value =
-    data.section || "";
   document.querySelector("input[placeholder='Department']").value =
-    data.prog_department_id || "N/A";
+    data.prog_department_id || data.department || "N/A";
 
-  // Read-only profile details
-  document.getElementById("userIdText").textContent = data.user_id || "";
+  // Profile Details
+  document.getElementById("userIdText").textContent = data.user_id ?? "";
   document.getElementById("studentIdText").textContent =
     data.student_id || data.id || "";
   document.getElementById("firstNameText").textContent = data.first_name || "";
@@ -67,11 +61,41 @@ function populateProfileForm(data) {
     data.middle_name || "";
   document.getElementById("lastNameText").textContent = data.last_name || "";
   document.getElementById("emailText").textContent = data.email || "";
-  document.getElementById("courseText").textContent = data.course || "N/A";
-  document.getElementById("yearText").textContent = data.year_level || "N/A";
-  document.getElementById("sectionText").textContent = data.section || "N/A";
   document.getElementById("departmentText").textContent =
-    data.prog_department_id || "N/A";
+    data.prog_department_id || data.department || "N/A";
+
+  // Show/hide fields based on user type
+  if (data.user_type === "student") {
+    // Show student fields
+    document.querySelectorAll(".student-only").forEach((el) => {
+      el.style.display = "flex";
+    });
+    document.querySelectorAll(".professor-only").forEach((el) => {
+      el.style.display = "none";
+    });
+
+    // Populate student-only fields
+    document.getElementById("courseText").textContent = data.course || "N/A";
+    document.getElementById("yearText").textContent = data.year_level || "N/A";
+    document.getElementById("sectionText").textContent = data.section || "N/A";
+    document.querySelector("input[placeholder='Course']").value =
+      data.course || "N/A";
+    document.querySelector("input[placeholder='Year']").value =
+      data.year_level || "N/A";
+    document.querySelector("input[placeholder='Section']").value =
+      data.section || "N/A";
+  } else if (data.user_type === "professor") {
+    // Hide student fields
+    document.querySelectorAll(".student-only").forEach((el) => {
+      el.style.display = "none";
+    });
+    document.querySelectorAll(".professor-only").forEach((el) => {
+      el.style.display = "flex";
+    });
+
+    // Optional: If you have `position`, set it here
+    document.getElementById("positionText").textContent = data.position; // or data.position
+  }
 }
 
 document.getElementById("editProfileBtn").addEventListener("click", () => {

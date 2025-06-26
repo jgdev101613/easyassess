@@ -46,7 +46,25 @@ class Clearance {
          VALUES (:student_id, :department_id, :attachment)"
       );
 
+      $isThereStatus = $this->getRemarks($studentId, $departmentId);
+
+      if ($isThereStatus === "No remarks yet.") {
+        $insertStatusStmt = $this->db->prepare(
+          "INSERT INTO clearance_status (student_id, department_id, status)
+          VALUES (:student_id, :department_id, :status)"
+        );
+
+        $insertStatusStmt->execute([
+          ':student_id' => $studentId,
+          ':department_id' => $departmentId,
+          ':status' => "pending"
+        ]);
+      }
+
       $attachments = implode(',', $filePaths);
+      if (empty($attachments)) {
+        $attachments = 'No Attachment'; // or use 'no_attachment' if you prefer
+      }
 
       $stmt->execute([
         ':student_id' => $studentId,

@@ -19,17 +19,22 @@ class ClearanceController extends Clearance {
     if ($this->hasEmptyFields()) {
       return ['success' => false, 'message' => 'Required fields missing.'];
     }
+  
+    $storedPaths = [];
 
-    $storedPaths = $this->storeAttachments($this->files, $this->studentId);
-    if (empty($storedPaths)) {
-      return ['success' => false, 'message' => 'No files were uploaded.'];
+    // Only attempt storing if files exist
+    if (!empty($this->files['name'][0])) {
+      $storedPaths = $this->storeAttachments($this->files, $this->studentId);
+      if (empty($storedPaths)) {
+        return ['success' => false, 'message' => 'No files were uploaded.'];
+      }
     }
 
     return $this->saveRequirement($this->studentId, $this->departmentId, $storedPaths);
   }
 
-  private function hasEmptyFields(): bool {
-    return empty($this->studentId) || empty($this->departmentId) || empty($this->files['name'][0]);
+  protected function hasEmptyFields(): bool {
+    return empty($this->studentId) || empty($this->departmentId);
   }
 
   private function storeAttachments(array $files, $studentId): array {

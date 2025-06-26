@@ -40,7 +40,7 @@ try {
         $extra = $stmtStudent->fetch(PDO::FETCH_ASSOC);
     } elseif ($user['user_type'] === 'professor') {
         $stmtProf = $conn->prepare("
-            SELECT user_id, employee_id, first_name, middle_name, last_name, department 
+            SELECT user_id, employee_id, first_name, middle_name, last_name, department, position
             FROM professors 
             WHERE employee_id = :id
         ");

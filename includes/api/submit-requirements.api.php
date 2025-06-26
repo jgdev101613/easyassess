@@ -9,9 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $departmentId = $_POST['department_id'] ?? '';
   $attachments = $_FILES['attachments'] ?? [];
 
-  if (!$studentId || !$departmentId || empty($attachments['name'][0])) {
+  if (!$studentId || !$departmentId) {
     echo json_encode(['success' => false, 'message' => 'Invalid request.']);
     exit;
+  }
+  
+  if (empty($attachments['name'][0])) {
+    // Allow no attachments but still save status as pending
+    $attachments = []; // explicitly make it empty
   }
 
   $controller = new ClearanceController($conn, $studentId, $departmentId, $attachments);

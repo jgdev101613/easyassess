@@ -1,9 +1,21 @@
+<?php
+
+// SESSION
+require_once "includes/session/config.session.inc.php";
+
+$department = null;
+if ($user_type === "professor") {
+  $department = $_SESSION['user']['department_name'];
+}
+
+?>
+
 <div class="container">
   <!-- PROFESSOR DASHBOARD -->
   <div class="search-bar">
     <input type="text" id="searchStudentID" placeholder="Search by Student ID...">
   </div>
-  <h2 class="section-title">Clearance Submissions</h2>
+  <h2 class="section-title">Clearance Submissions (<?= $department?>)</h2>
 
   <div class="submission-box">
     <div class="submission-header">

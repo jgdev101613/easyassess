@@ -63,10 +63,14 @@ $profile_photo = $_SESSION['user']['profile_image'];
         <div class="detail-row"><span>Middle Name:</span> <strong id="middleNameText"></strong></div>
         <div class="detail-row"><span>Last Name:</span> <strong id="lastNameText"></strong></div>
         <div class="detail-row"><span>Email:</span> <strong id="emailText"></strong></div>
-        <div class="detail-row"><span>Course:</span> <strong id="courseText"></strong></div>
-        <div class="detail-row"><span>Year:</span> <strong id="yearText"></strong></div>
-        <div class="detail-row"><span>Section:</span> <strong id="sectionText"></strong></div>
+        <!-- Student only -->
+        <div class="detail-row student-only"><span>Course:</span> <strong id="courseText"></strong></div>
+        <div class="detail-row student-only"><span>Year:</span> <strong id="yearText"></strong></div>
+        <div class="detail-row student-only"><span>Section:</span> <strong id="sectionText"></strong></div>
         <div class="detail-row"><span>Department:</span> <strong id="departmentText"></strong></div>
+
+        <!-- Professor only -->
+        <div class="detail-row professor-only" style="display: none;"><span>Position:</span> <strong id="positionText">Professor</strong></div>
       </div>
 
       <button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
@@ -80,16 +84,19 @@ $profile_photo = $_SESSION['user']['profile_image'];
       <span class="close-btn" id="closeProfileModal">&times;</span>
       <h2>Edit Profile Information</h2>
       <form id="editProfileForm">
-        <input type="text" placeholder="First Name" required>
-        <input type="text" placeholder="Middle Name">
-        <input type="text" placeholder="Last Name" required>
-        <input type="email" placeholder="Email" required>
-        <input type="text" placeholder="Course">
-        <input type="text" placeholder="Year">
-        <input type="text" placeholder="Section">
-        <input type="text" placeholder="Department">
-        <button type="submit">Save Changes</button>
-      </form>
+      <input type="text" placeholder="First Name" required>
+      <input type="text" placeholder="Middle Name">
+      <input type="text" placeholder="Last Name" required>
+      <input type="email" placeholder="Email" required>
+
+      <!-- Student-only fields -->
+      <input type="text" placeholder="Course" class="student-only">
+      <input type="text" placeholder="Year" class="student-only">
+      <input type="text" placeholder="Section" class="student-only">
+
+      <input type="text" placeholder="Department">
+      <button type="submit">Save Changes</button>
+    </form>
     </div>
   </div>
 

@@ -2,7 +2,6 @@
 // SESSION
 require_once "includes/session/config.session.inc.php";
 
-echo $_SESSION['user'];
 
 if(isset($_SESSION['user'])){
   header('Location: dashboard.php');
@@ -34,12 +33,6 @@ if(isset($_SESSION['user'])){
       <p>Please wait, processing...</p>
     </div>
     <!-- END OF LOADING -->
-
-    <?php 
-    if (isset($_SESSION['student'])) {
-      echo '<button type="button" id="buttonSignOut">Logout</button>';
-    } 
-    ?>
 
     <!-- BACKGROUND -->
     <div class="background"> 

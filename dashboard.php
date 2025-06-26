@@ -12,6 +12,8 @@ $user_type = $_SESSION['user']['user_type'];
 $userid = $_SESSION['user']['id'];
 $profile_photo = $_SESSION['user']['profile_image'];
 
+
+
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +38,6 @@ $profile_photo = $_SESSION['user']['profile_image'];
     <title>Easy Assess - Dashboard</title>
 </head>
 <body>
-
   <?php
   // Header
   include_once "includes/components/header.html";
@@ -56,6 +57,8 @@ $profile_photo = $_SESSION['user']['profile_image'];
   // Navigation
   include_once "includes/components/navigation.html";
   ?>
+
+  <h1><?php echo json_encode($_SESSION['user']); ?></h1>
 
   
     

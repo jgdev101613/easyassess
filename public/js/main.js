@@ -1,3 +1,5 @@
+import { showToast } from "./utils/toast.js";
+
 const requirementModal = document.getElementById("requirementModal");
 const invalidModal = document.getElementById("invalidModal");
 
@@ -11,7 +13,9 @@ document
     const departmentId = input.dataset.department;
 
     const files = input.files;
-    if (files.length === 0) {
+
+    // Only check if input is marked required
+    if (input.required && files.length === 0) {
       alert("Please upload at least one file.");
       return;
     }
@@ -31,14 +35,22 @@ document
 
       const data = await response.json();
       if (data.success) {
-        alert("Requirements submitted successfully!");
+        showToast("Requirements submitted successfully!", "success");
         requirementModal.style.display = "none";
+
+        // safer reload
+        // Wait for toast to finish before reloading
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        window.location.href = window.location.href;
       } else {
-        alert("Submission failed: " + (data.message || "Unknown error."));
+        showToast(
+          "Submission failed: " + (data.message || "Unknown error."),
+          "error"
+        );
       }
     } catch (err) {
       console.error("Upload failed:", err);
-      alert("Something went wrong. Try again later.");
+      showToast("Something went wrong. Try again later.", "error");
     }
   });
 
@@ -135,6 +147,20 @@ document.querySelectorAll(".clearance-box").forEach((box) => {
         const data = await response.json();
         const remarks = data?.remarks || "No remarks available.";
         document.getElementById("clearance-remarks").textContent = remarks;
+
+        const attachmentInput = document.getElementById("attachment");
+
+        // ✅ Conditional required logic
+        if (
+          remarks.toLowerCase().includes("no remarks") ||
+          remarks.trim() === ""
+        ) {
+          attachmentInput.removeAttribute("required");
+          attachmentInput.required = false;
+        } else {
+          attachmentInput.setAttribute("required", "required");
+          attachmentInput.required = true;
+        }
       } catch (error) {
         console.error("Failed to fetch remarks:", error);
         document.getElementById("clearance-remarks").textContent =

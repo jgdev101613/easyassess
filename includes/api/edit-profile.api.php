@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     'last_name'    => $_POST['lastname'] ?? '',
     'email'        => $_POST['email'] ?? '',
     'course'       => $_POST['course'] ?? '',
-    'year_level'         => $_POST['year'] ?? '',
+    'year_level'   => $_POST['year'] ?? '',
     'section'      => $_POST['section'] ?? '',
     'department'   => $_POST['department'] ?? '',
   ];
