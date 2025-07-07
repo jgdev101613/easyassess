@@ -20,6 +20,10 @@ $user_type = $_SESSION['user']['user_type'];
   <link rel="stylesheet" href="public/css/settings.css" />
   <link rel="icon" href="assets/saclilogo.png" type="image/png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- TOASTIFY -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 <body>
 
@@ -63,10 +67,11 @@ $user_type = $_SESSION['user']['user_type'];
     <span class="close-btn" id="closePasswordModal">&times;</span>
     <h2>Change Password</h2>
     <form id="settingsPasswordForm">
-      <input type="password" placeholder="Current Password" required />
-      <input type="password" placeholder="New Password" required />
-      <input type="password" placeholder="Confirm Password" required />
-      <button type="submit">Update Password</button>
+      <input type="hidden" id="userId" value="<?php echo $_SESSION['user']['id']; ?>" />
+      <input type="password" placeholder="Current Password" id="currentPassword" required />
+      <input type="password" placeholder="New Password" id="newPassword" required />
+      <input type="password" placeholder="Confirm Password" id="confirmPassword" required />
+      <button id="buttonUpdatePassword" type="submit">Update Password</button>
     </form>
   </div>
 </div>

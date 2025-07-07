@@ -124,6 +124,41 @@ class User {
 
   }
 
+  public function resetPassword($userId, $currentPassword, $newPassword, $confirmPassword) {
+    if ($newPassword !== $confirmPassword) {
+      return ['status' => 'error', 'message' => 'Password do not match'];
+    }
+
+    $options = [
+      'cost' => 12,
+    ];
+
+    $stmt = $this->db->prepare('
+      SELECT password FROM users WHERE id = :id;
+    ');
+
+    $stmt->execute([
+      'id' => $userId,    
+    ]);
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (password_verify($currentPassword, $row['password'])) {
+      $stmt = $this->db->prepare('
+        UPDATE users SET password = :password WHERE id = :id;   
+      ');
+
+      $stmt->execute([
+        'password' => password_hash($newPassword, PASSWORD_BCRYPT, $options),
+        'id' => $userId,
+      ]);     
+
+      return ['status' => 'success', 'message' => 'Password Updated Successfully!'];
+    } else {
+      return ['status' => 'error', 'message' => 'Invalid Current Password!'];
+    }
+
+  }
+
   public function getUser($userId, $password) {
     try {
       $stmt = $this->db->prepare('

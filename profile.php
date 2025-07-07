@@ -46,13 +46,13 @@ $profile_photo = $_SESSION['user']['profile_image'];
     <div class="profile-box">
       <div class="profile-header">
         <div class="profile-photo-wrapper">
-          <img src="assets/default-profile.jpg" alt="Profile Photo" class="profile-photo" id="profileImage">
+          <img id="profileImage" src="assets/default-profile.jpg" alt="Profile Photo" class="profile-photo" id="profileImage">
           <button class="edit-photo-btn" title="Edit Photo" id="editPhotoBtn">✎</button>
           <input type="file" id="photoInput" accept="image/*" style="display: none;">
         </div>
         <div class="user-info">
-          <h2 class="user-name">Mark Jovan Canca</h2>
-          <p class="user-status active">Status: Active</p>
+          <h2 id="userName" class="user-name">Mark Jovan Canca</h2>
+          <p id="userStatus" class="user-status active">Status: Active</p>
         </div>
       </div>
 

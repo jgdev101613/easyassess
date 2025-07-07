@@ -1,5 +1,11 @@
 // toast.js
-export function showToast(message, type = "info", duration = 3000) {
+export function showToast(
+  message,
+  type = "info",
+  duration = 3000,
+  gravity = "bottom",
+  position = "right"
+) {
   let bgColor;
 
   switch (type) {
@@ -19,8 +25,8 @@ export function showToast(message, type = "info", duration = 3000) {
   Toastify({
     text: message,
     duration: duration,
-    gravity: "bottom",
-    position: "right",
+    gravity: gravity,
+    position: position,
     stopOnFocus: true,
     close: false,
     style: {

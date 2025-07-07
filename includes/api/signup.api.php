@@ -9,11 +9,13 @@ error_reporting(E_ALL);
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registerUserId'])) {
   
   // User Auth
-  $userId = $_POST["registerUserId"];
+  $userIdRaw = $_POST["registerUserId"];
   $email = $_POST["registerEmail"];
   $password = $_POST["registerPassword"];
   $repassword = $_POST["registerRePassword"];
   $user_type = "student"; // or get from $_POST if needed
+
+  $userId = str_replace('-', '', $userIdRaw); // ✅ Remove dashes from userId
 
   // User Detaiols
   $firstName = $_POST["registerFirstName"];

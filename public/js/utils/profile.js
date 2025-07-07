@@ -1,5 +1,5 @@
 import { navigation } from "./navigation.js";
-
+import { showToast } from "./toast.js";
 // When profile page is loaded fetch the necessary data
 document.addEventListener("DOMContentLoaded", () => {
   navigation();
@@ -11,6 +11,45 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   fetchUserProfile(userId);
+
+  // Change profile
+  document
+    .getElementById("photoInput")
+    .addEventListener("change", async function () {
+      const file = this.files[0];
+      const userId = getUserId();
+
+      if (file && userId) {
+        // Show preview
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById("profileImage").src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+
+        // Prepare form data
+        const formData = new FormData();
+        formData.append("profileImage", file);
+        formData.append("userId", userId);
+
+        try {
+          const res = await fetch("includes/api/upload-profile-image.api.php", {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await res.json();
+          if (result.status === "success") {
+            showToast("Profile photo updated!", "success");
+          } else {
+            showToast(result.message, "error");
+          }
+        } catch (err) {
+          console.error("Upload error:", err);
+          showToast("Image upload failed.", "error");
+        }
+      }
+    });
 });
 
 // Get User Id From Body
@@ -30,6 +69,7 @@ async function fetchUserProfile(userId) {
     const result = await response.json();
 
     if (result.status === "success") {
+      console.log(result);
       populateProfileForm(result.data);
     } else {
       console.warn(result.message);
@@ -41,6 +81,14 @@ async function fetchUserProfile(userId) {
 
 // Populate the fields
 function populateProfileForm(data) {
+  const fullName =
+    data.first_name + " " + data.middle_name + " " + data.last_name;
+  // Profile
+  document.getElementById("userName").textContent = fullName;
+  document.getElementById("userStatus").textContent = data.status;
+  document.getElementById("profileImage").src =
+    data.profile_image || "assets/default-profile.jpg";
+
   // Form (input) values
   document.querySelector("input[placeholder='First Name']").value =
     data.first_name || "";

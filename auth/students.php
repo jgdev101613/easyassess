@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="clearance-box" data-allowed="true">
+    <div class="clearance-box" data-allowed="true" data-pending="false">
       <div class="clearance-title" data-departmentid="LIB2025">Librarian</div>
       <div class="sub-items">View requirements & request signature</div>
       <div class="status">
@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="clearance-box" data-allowed="false"> 
+    <div class="clearance-box" data-allowed="false" data-pending="false"> 
       <div class="clearance-title" data-departmentid="OSA2025">Office of Student Affairs</div>
       <div class="sub-items">- POD</div>
       <div class="sub-items">- Psychology Test</div>
@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="clearance-box" data-allowed="false">
+    <div class="clearance-box" data-allowed="false" data-pending="false">
       <div class="clearance-title" data-departmentid="DEAN2025">Dean</div>
       <div class="sub-items">View requirements & request signature</div>
       <div class="status">
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="clearance-box" data-allowed="false">
+    <div class="clearance-box" data-allowed="false" data-pending="false">
       <div class="clearance-title" data-departmentid="REG2025">Registrar</div>
       <div class="sub-items">View requirements & request signature</div>
       <div class="status">
@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div class="clearance-box" data-allowed="false">
+    <div class="clearance-box" data-allowed="false" data-pending="false">
       <div class="clearance-title" data-departmentid="ACC2025" >Accounting</div>
       <div class="sub-items">View requirements & request signature</div>
       <div class="status">

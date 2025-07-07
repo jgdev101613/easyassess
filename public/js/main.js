@@ -76,8 +76,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll(".clearance-box").forEach((box) => {
       const titleEl = box.querySelector(".clearance-title");
       const deptId = titleEl.dataset.departmentid;
-
       const deptData = deptStatuses.find((d) => d.department_id === deptId);
+      const isPending = deptData?.status === "pending";
       const isApproved = deptData?.status === "approved";
       const needSubmission = deptData?.status === "needs_submission";
       const pending = deptData?.status === "pending";
@@ -90,6 +90,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         allowNext = false; // only one "true" at a time
       } else {
         box.setAttribute("data-allowed", "false");
+      }
+
+      if (isPending) {
+        box.setAttribute("data-pending", "true");
       }
 
       // UI update
@@ -126,8 +130,18 @@ document.querySelectorAll(".clearance-box").forEach((box) => {
       .textContent.trim();
 
     const allowedState = box.getAttribute("data-allowed");
+    const isPending = box.getAttribute("data-pending");
 
-    if (allowedState === "true") {
+    if (isPending === "true") {
+      showToast(
+        "This department is pending for approval.",
+        "warning",
+        3000,
+        "top",
+        "left"
+      );
+      return;
+    } else if (allowedState === "true") {
       // Set modal content
       document.querySelector("#attachment").dataset.department = department;
       requirementModal.querySelector(

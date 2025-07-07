@@ -15,7 +15,7 @@ $user_id = $_GET['user_id'];
 
 try {
     // 1. Get basic user info
-    $stmt = $conn->prepare("SELECT id, user_type, email FROM users WHERE id = :id");
+    $stmt = $conn->prepare("SELECT id, user_type, email, status, profile_image FROM users WHERE id = :id");
     $stmt->bindParam(':id', $user_id);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
