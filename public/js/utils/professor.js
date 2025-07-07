@@ -124,6 +124,35 @@ function setupReviewButtons() {
       modal.style.display = "block";
     });
   });
+
+  const approveBtn = document.querySelector(".btn-approve");
+
+  approveBtn.onclick = async () => {
+    const studentId = document.getElementById("modalStudentID").textContent;
+    try {
+      const response = await fetch(
+        "includes/api/professor/approve-clearance.api.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ student_id: studentId }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert("Clearance approved successfully.");
+        document.getElementById("reviewModal").style.display = "none";
+        fetchClearanceSubmissions(); // refresh list
+      } else {
+        alert("Failed to approve: " + result.message);
+      }
+    } catch (err) {
+      console.error("Approval error:", err);
+      alert("Something went wrong.");
+    }
+  };
 }
 
 document.querySelector(".close-btn").addEventListener("click", () => {

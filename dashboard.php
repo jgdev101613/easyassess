@@ -56,11 +56,6 @@ $profile_photo = $_SESSION['user']['profile_image'];
   }
   // Navigation
   include_once "includes/components/navigation.html";
-  ?>
-
-  <h1><?php echo json_encode($_SESSION['user']); ?></h1>
-
-  
-    
+  ?>    
 </body>
 </html>
