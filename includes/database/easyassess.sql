@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2025 at 09:22 AM
+-- Generation Time: Jul 07, 2025 at 09:11 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,7 +33,7 @@ CREATE TABLE `clearance_requirements` (
   `id` int(11) NOT NULL,
   `student_id` varchar(50) NOT NULL,
   `department_id` varchar(100) DEFAULT NULL,
-  `attachment` varchar(1000) NOT NULL,
+  `attachment` varchar(1000) NOT NULL DEFAULT 'No Requirements',
   `description` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -42,7 +42,7 @@ CREATE TABLE `clearance_requirements` (
 --
 
 INSERT INTO `clearance_requirements` (`id`, `student_id`, `department_id`, `attachment`, `description`) VALUES
-(1, '2301000555', 'OSA-F2025', 'Foundation Attendance', 'Submit your foundation attendance sheet.');
+(18, '2301000555', 'LIB2025', 'No Attachment', NULL);
 
 -- --------------------------------------------------------
 
@@ -54,7 +54,7 @@ CREATE TABLE `clearance_status` (
   `id` int(11) NOT NULL,
   `student_id` varchar(50) DEFAULT NULL,
   `department_id` varchar(255) DEFAULT NULL,
-  `status` enum('pending','needs_submission','approved') DEFAULT 'pending',
+  `status` enum('pending','needs_submission','approved') DEFAULT 'needs_submission',
   `remarks` text DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -64,7 +64,7 @@ CREATE TABLE `clearance_status` (
 --
 
 INSERT INTO `clearance_status` (`id`, `student_id`, `department_id`, `status`, `remarks`, `updated_at`) VALUES
-(2, '2301000555', 'LIB2025', 'needs_submission', 'Please return Technology World (Book 9832TE)', '2025-06-21 05:06:58');
+(7, '2301000555', 'LIB2025', 'pending', NULL, '2025-06-26 14:44:18');
 
 -- --------------------------------------------------------
 
@@ -128,11 +128,20 @@ CREATE TABLE `evaluations` (
 
 CREATE TABLE `notifications` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` varchar(50) NOT NULL,
+  `title` varchar(50) NOT NULL,
   `message` text DEFAULT NULL,
   `is_read` tinyint(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `user_id`, `title`, `message`, `is_read`, `created_at`) VALUES
+(1, '2301000555', 'Account Activated', 'You\'re account has been activated', 1, '2025-06-21 16:32:34'),
+(3, '2301000555', 'Book Return', 'Please return Science Book', 1, '2025-06-21 17:21:38');
 
 -- --------------------------------------------------------
 
@@ -146,9 +155,16 @@ CREATE TABLE `professors` (
   `first_name` varchar(50) DEFAULT NULL,
   `middle_name` varchar(50) DEFAULT NULL,
   `last_name` varchar(50) DEFAULT NULL,
-  `department` varchar(100) DEFAULT NULL,
+  `department` varchar(50) DEFAULT NULL,
   `position` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `professors`
+--
+
+INSERT INTO `professors` (`user_id`, `employee_id`, `first_name`, `middle_name`, `last_name`, `department`, `position`) VALUES
+(0, '2301000512', 'John Gregg', 'Virina', 'Felicisimo', 'LIB2025', 'Employee');
 
 -- --------------------------------------------------------
 
@@ -185,7 +201,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`user_id`, `student_id`, `first_name`, `middle_name`, `last_name`, `course`, `year_level`, `section`, `prog_department_id`) VALUES
-(2025068662, '2301000555', 'Mark Jovan', 'Anareta', 'Cananca', 'BSIT', 2, 'A', 'SBAT');
+(2025068662, '2301000555', 'Mark Jovan', 'A', 'Cananca', 'BSIT', 2, 'A', 'SBAT');
 
 -- --------------------------------------------------------
 
@@ -236,6 +252,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user_type`, `email`, `password`, `profile_image`, `created_at`, `status`, `verification_code`) VALUES
+('2301000512', 'professor', 'felicisimojv@gmail.com', '$2y$12$zunEZhdP5T5iS2T2MZEoh.HqBTs0EwFivAsHNqs19CFxAA4E3Q9XK', 'assets/Users/2301-000512/6857f1a84a16c.png', '2025-06-22 12:06:00', 'Active', NULL),
 ('2301000555', 'student', 'markjovan@gmail.com', '$2y$12$tlzuy9ziuXJbxZOiJJjLeuTd0bm6RHQDo8bQ/u2nUEmDXQhPu1WZG', 'assets/Users/2301-000555/6852e74e1a525.png', '2025-06-18 16:20:30', 'Active', NULL);
 
 --
@@ -293,7 +310,8 @@ ALTER TABLE `notifications`
 --
 ALTER TABLE `professors`
   ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `employee_id` (`employee_id`);
+  ADD UNIQUE KEY `employee_id` (`employee_id`),
+  ADD KEY `fk_department_id` (`department`);
 
 --
 -- Indexes for table `students`
@@ -332,13 +350,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `clearance_requirements`
 --
 ALTER TABLE `clearance_requirements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `clearance_status`
 --
 ALTER TABLE `clearance_status`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `enrollments`
@@ -351,6 +369,12 @@ ALTER TABLE `enrollments`
 --
 ALTER TABLE `evaluations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `student_submissions`
@@ -383,18 +407,23 @@ ALTER TABLE `clearance_status`
   ADD CONSTRAINT `fk_clearance_student_id` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `enrollments`
---
-ALTER TABLE `enrollments`
-  ADD CONSTRAINT `enrollments_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`user_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `enrollments_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`),
-  ADD CONSTRAINT `enrollments_ibfk_3` FOREIGN KEY (`professor_id`) REFERENCES `professors` (`user_id`);
-
---
 -- Constraints for table `evaluations`
 --
 ALTER TABLE `evaluations`
   ADD CONSTRAINT `evaluations_ibfk_1` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollments` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `fk_notifications_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `professors`
+--
+ALTER TABLE `professors`
+  ADD CONSTRAINT `fk_department_id` FOREIGN KEY (`department`) REFERENCES `departments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_professor_user_id` FOREIGN KEY (`employee_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `students`
