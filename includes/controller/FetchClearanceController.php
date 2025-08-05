@@ -10,7 +10,7 @@ class FetchClearanceController extends Clearance {
     parent::__construct($db);
   }
 
-  public function getClearanceSubmissions($department_id) {
-    return $this->fetchClearanceByDepartment($department_id);
+  public function getClearanceSubmissions($department_id, $studentId = null) {
+    return $this->fetchClearanceByDepartment($department_id, $studentId);
   }
 }

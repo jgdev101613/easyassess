@@ -4,8 +4,9 @@
 require_once "includes/session/config.session.inc.php";
 
 $department = null;
+$departmentId = $_SESSION['user']['department_id'];
 if ($user_type === "professor") {
-  $department = $_SESSION['user']['department_name'];
+  $department = $_SESSION['user']['department_name'] . "/" . $_SESSION['user']['department_id'];
 }
 
 ?>

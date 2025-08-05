@@ -1,11 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
   fetchClearanceSubmissions();
   setupReviewButtons();
+
+  let debounceTimer;
+  document.getElementById("searchStudentID").addEventListener("input", (e) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      const studentId = e.target.value.trim();
+      fetchClearanceSubmissions(studentId);
+    }, 300); // wait 300ms before triggering
+  });
 });
 
-async function fetchClearanceSubmissions() {
+async function fetchClearanceSubmissions(studentId = "") {
   try {
-    const res = await fetch("includes/api/fetch-clearance.api.php");
+    let student = studentId.replace("-", "").trim();
+    // const res = await fetch("includes/api/fetch-clearance.api.php");
+    const res = await fetch(
+      "includes/api/fetch-clearance.api.php?student_id=" +
+        encodeURIComponent(student)
+    );
     const data = await res.json();
 
     const container = document.querySelector(".container");
