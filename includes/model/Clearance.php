@@ -40,49 +40,45 @@ class Clearance {
   }
 
   public function saveRequirement($studentId, string $departmentId, array $filePaths): array {
-    try {
-      $stmt = $this->db->prepare(
-        "INSERT INTO clearance_requirements (student_id, department_id, attachment) 
-         VALUES (:student_id, :department_id, :attachment)"
-      );
-
-      $isThereStatus = $this->getRemarks($studentId, $departmentId);
-
-      if ($isThereStatus === "No remarks yet.") {
-        $insertStatusStmt = $this->db->prepare(
-          "INSERT INTO clearance_status (student_id, department_id, status)
-          VALUES (:student_id, :department_id, :status)"
-        );
-
-        $insertStatusStmt->execute([
-          ':student_id' => $studentId,
-          ':department_id' => $departmentId,
-          ':status' => "pending"
-        ]);
-      }
-
-      $attachments = implode(',', $filePaths);
-      if (empty($attachments)) {
-        $attachments = 'No Attachment'; // or use 'no_attachment' if you prefer
-      }
-
-      $stmt->execute([
-        ':student_id' => $studentId,
-        ':department_id' => $departmentId,
-        ':attachment' => $attachments
-      ]);
-
-      // Update the clearance status to "pending"
-      $clearanceStatus = $this->updateClearanceStatus($studentId, $departmentId);
-      if (!$clearanceStatus) {
-        return ['success' => false, 'message' => $clearanceStatus['message']];
-      }
-
-      return ['success' => true];
-    } catch (Exception $e) {
-      return ['success' => false, 'message' => $e->getMessage()];
+  try {
+    $attachments = implode(',', $filePaths);
+    if (empty($attachments)) {
+      $attachments = 'No Attachment';
     }
+
+    // --- UPSERT clearance_requirements ---
+    $stmt = $this->db->prepare("
+      INSERT INTO clearance_requirements (student_id, department_id, attachment)
+      VALUES (:student_id, :department_id, :attachment)
+      ON DUPLICATE KEY UPDATE 
+        attachment = VALUES(attachment)
+    ");
+    $stmt->execute([
+      ':student_id' => $studentId,
+      ':department_id' => $departmentId,
+      ':attachment' => $attachments
+    ]);
+
+    // --- UPSERT clearance_status ---
+    $stmtStatus = $this->db->prepare("
+      INSERT INTO clearance_status (student_id, department_id, status, updated_at)
+      VALUES (:student_id, :department_id, :status, NOW())
+      ON DUPLICATE KEY UPDATE 
+        status = VALUES(status),
+        updated_at = NOW()
+    ");
+    $stmtStatus->execute([
+      ':student_id' => $studentId,
+      ':department_id' => $departmentId,
+      ':status' => 'pending'
+    ]);
+
+    return ['success' => true];
+  } catch (Exception $e) {
+    return ['success' => false, 'message' => $e->getMessage()];
   }
+}
+
 
   public function updateClearanceStatus(string $studentId, string $departmentId) {
     try {
@@ -108,7 +104,7 @@ class Clearance {
            s.first_name, s.middle_name, s.last_name, s.course, s.year_level, s.section
     FROM clearance_status cs
     JOIN students s ON cs.student_id = s.student_id
-    WHERE cs.department_id = ?
+    WHERE cs.department_id = ? AND cs.status != 'needs_submission'
   ";
 
   $params = [$department_id];

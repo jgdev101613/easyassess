@@ -80,6 +80,8 @@ if ($user_type === "professor") {
     <div class="modal-actions">
       <button class="btn-approve">Approve</button>
       <button class="btn-reject">Reject</button>
+      <button class="btn-remark">Remark</button>
+      <input type="text" id="modalRemark" placeholder="Remarks Here">
     </div>
   </div>
 </div>

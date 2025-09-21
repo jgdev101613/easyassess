@@ -14,8 +14,9 @@ class SignUpController extends User {
   private $firstName;
   private $middleName;
   private $lastName;
+  private $eRole;
 
-  public function __construct($db, $userId, $user_type, $email, $password, $repassword, $profile_image, $firstName, $middleName, $lastName) {
+  public function __construct($db, $userId, $user_type, $email, $password, $repassword, $profile_image, $firstName, $middleName, $lastName, $eRole) {
     parent::__construct($db);
     $this->userId = $userId;
     $this->user_type = $user_type;
@@ -26,6 +27,7 @@ class SignUpController extends User {
     $this->firstName = $firstName;
     $this->middleName = $middleName;
     $this->lastName = $lastName;
+    $this->eRole = $eRole;
   }
 
   public function signupUser() {
@@ -47,7 +49,8 @@ class SignUpController extends User {
         $this->profile_image,
         $this->firstName,
         $this->middleName,
-        $this->lastName
+        $this->lastName,
+        $this->eRole
       );
 
       return $response;

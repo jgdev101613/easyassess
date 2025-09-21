@@ -124,6 +124,16 @@ async function signUp() {
   const registerPassword = document.getElementById("SUPassword").value;
   const registerRePassword = document.getElementById("SURePassword").value;
   const registerPhoto = document.getElementById("SUPhoto").files[0];
+  const isChecked = document.getElementById("registerEmployee").checked;
+  const employeeRole = document.getElementById("employeeRole").value;
+
+  let student = null;
+
+  if (!isChecked) {
+    student = "student";
+  } else {
+    student = "professor";
+  }
 
   const errorMessage = document.getElementById("signup-error");
   const successMessage = document.getElementById("signup-message");
@@ -149,6 +159,8 @@ async function signUp() {
   formData.append("registerPassword", registerPassword);
   formData.append("registerRePassword", registerRePassword);
   formData.append("registerPhoto", registerPhoto);
+  formData.append("registerType", student);
+  formData.append("registerERole", employeeRole);
 
   document.getElementById("loadingMessage").style.display = "flex";
 

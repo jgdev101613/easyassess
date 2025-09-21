@@ -13,7 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registerUserId'])) {
   $email = $_POST["registerEmail"];
   $password = $_POST["registerPassword"];
   $repassword = $_POST["registerRePassword"];
-  $user_type = "student"; // or get from $_POST if needed
+  $user_type = $_POST["registerType"]; // or get from $_POST if needed
+  $eRole = $_POST["registerERole"];
 
   $userId = str_replace('-', '', $userIdRaw); // ✅ Remove dashes from userId
 
@@ -70,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registerUserId'])) {
     // Initialize your database connection
     $db = $conn; 
     
-    $signup = new SignUpController($db, $userId, $user_type, $email, $password, $repassword, $profile_image, $firstName, $middleName, $lastName);
+    $signup = new SignUpController($db, $userId, $user_type, $email, $password, $repassword, $profile_image, $firstName, $middleName, $lastName, $eRole);
     $response = $signup->signupUser();
 
     // Running Error handling

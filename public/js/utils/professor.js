@@ -22,6 +22,8 @@ async function fetchClearanceSubmissions(studentId = "") {
     );
     const data = await res.json();
 
+    console.log(data);
+
     const container = document.querySelector(".container");
     const existingBoxes = document.querySelectorAll(".submission-box");
     existingBoxes.forEach((box) => box.remove()); // Clear old content
@@ -41,9 +43,9 @@ async function fetchClearanceSubmissions(studentId = "") {
         <div class="submission-header">
           <div>
             <h3 class="student-name">${submission.full_name}</h3>
-            <p class="student-details">${submission.course} - ${
-        submission.year_level
-      }${submission.section}</p>
+            <p class="student-details">${submission.course || "N/A"} - ${
+        submission.year_level || ""
+      }${submission.section || ""}</p>
           </div>
           <span class="status-label ${statusClass}">${submission.status}</span>
         </div>
@@ -164,6 +166,35 @@ function setupReviewButtons() {
       }
     } catch (err) {
       console.error("Approval error:", err);
+      alert("Something went wrong.");
+    }
+  };
+
+  const remarksBtn = document.querySelector(".btn-remark");
+  remarksBtn.onclick = async () => {
+    const studentId = document.getElementById("modalStudentID").textContent;
+    const remark = document.getElementById("modalRemark").value;
+    try {
+      const response = await fetch(
+        "includes/api/professor/remark-clearance.api.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ remark: remark, student_id: studentId }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert("Clearance added remark successfully.");
+        document.getElementById("reviewModal").style.display = "none";
+        fetchClearanceSubmissions(); // refresh list
+      } else {
+        alert("Failed to add remarks: " + result.message);
+      }
+    } catch (err) {
+      console.error("Remark error:", err);
       alert("Something went wrong.");
     }
   };

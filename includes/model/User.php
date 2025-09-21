@@ -68,7 +68,8 @@ class User {
       $profile_image,
       $firstName,
       $middleName,
-      $lastName
+      $lastName,
+      $eRole
     ) {
     try {
       $options = [
@@ -88,28 +89,50 @@ class User {
         'email' => $email,
         'password' => password_hash($password, PASSWORD_BCRYPT, $options),
         'profile_image' => $profile_image,
-        'status' => "Pending"
+        'status' => "Active"
       ]);
 
       if ($sucess) {
         try {
           // ✅ Query executed successfully
-          $user_id = $this->generateUniqueUserId();
+          if ($user_type === "student") {
+            $user_id = $this->generateUniqueUserId();
 
-          $studentsStmt = $this->db->prepare('
-            INSERT INTO students (user_id, student_id, first_name, middle_name, last_name) 
-            VALUES (:user_id, :student_id, :first_name, :middle_name, :last_name);
-          ');
+            $studentsStmt = $this->db->prepare('
+              INSERT INTO students (user_id, student_id, first_name, middle_name, last_name) 
+              VALUES (:user_id, :student_id, :first_name, :middle_name, :last_name);
+            ');
 
-          $user_id = $this->generateUniqueUserId();
+            $user_id = $this->generateUniqueUserId();
 
-          $studentsStmt->execute([
-            'user_id' => $user_id,
-            'student_id' => $userId,
-            'first_name' => $firstName,
-            'middle_name' => $middleName,
-            'last_name' => $lastName,
-          ]);
+            $studentsStmt->execute([
+              'user_id' => $user_id,
+              'student_id' => $userId,
+              'first_name' => $firstName,
+              'middle_name' => $middleName,
+              'last_name' => $lastName,
+            ]);
+          } else {
+            $user_id = $this->generateUniqueUserId();
+
+            $studentsStmt = $this->db->prepare('
+              INSERT INTO professors (user_id, employee_id, first_name, middle_name, last_name, department, position) 
+              VALUES (:user_id, :employee_id, :first_name, :middle_name, :last_name, :department, :position);
+            ');
+
+            $user_id = $this->generateUniqueUserId();
+
+            $studentsStmt->execute([
+              'user_id' => $user_id,
+              'employee_id' => $userId,
+              'first_name' => $firstName,
+              'middle_name' => $middleName,
+              'last_name' => $lastName,
+              'department' => $eRole,
+              'position' => "Employee",
+            ]);
+          }
+          
 
           return ['status' => 'success', 'message' => 'Account Created Successfully!'];
         } catch (\Throwable $th) {

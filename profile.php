@@ -8,9 +8,16 @@ if (!isset($_SESSION['user'])) {
   exit();
 }
 
+$useridText = null;
 $user_type = $_SESSION['user']['user_type'];
 $userid = $_SESSION['user']['id'];
 $profile_photo = $_SESSION['user']['profile_image'];
+
+if (strtolower($user_type) === "student") {
+  $useridText = "Student ID";
+} else if (strtolower($user_type) === "professor") {
+  $useridText = "Employee ID";
+}
 
 ?>
 
@@ -58,7 +65,7 @@ $profile_photo = $_SESSION['user']['profile_image'];
 
       <div class="profile-details">
         <div class="detail-row"><span>User ID:</span> <strong id="userIdText"></strong></div>
-        <div class="detail-row"><span>Student ID:</span> <strong id="studentIdText"></strong></div>
+        <div class="detail-row"><span><?php echo $useridText; ?> </span> <strong id="studentIdText"></strong></div>
         <div class="detail-row"><span>First Name:</span> <strong id="firstNameText"></strong></div>
         <div class="detail-row"><span>Middle Name:</span> <strong id="middleNameText"></strong></div>
         <div class="detail-row"><span>Last Name:</span> <strong id="lastNameText"></strong></div>

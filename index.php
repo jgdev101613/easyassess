@@ -172,6 +172,38 @@ if(isset($_SESSION['user'])){
             <div class="signup-bottom">
               <button id="buttonSignUp" class="primary-button signup-button" type="button">Sign Up</button>   
             </div>
+            <div>
+              <input type="checkbox" id="registerEmployee" name="registerEmployee" />
+              <label for="registerEmployee" style="color: black;">Register Employee</label>
+            </div>
+
+            <!-- hidden select -->
+            <div id="employeeSelectWrapper" style="display: none; margin-top:10px;">
+              <label for="employeeRole" style="color: black;">Select Role:</label>
+              <select id="employeeRole" name="employeeRole">
+                <option value="none" selected>-- Select Role --</option>
+                <option value="LIB2025">LIBRARIAN</option>
+                <option value="OSA2025">OSA</option>
+                <option value="DEAN2025">DEAN</option>
+                <option value="REG2025">REGISTRAR</option>
+                <option value="ACC2025">ACCOUNTING</option>
+              </select>
+            </div>
+
+            
+            <script>
+              const checkbox = document.getElementById("registerEmployee");
+              const selectWrapper = document.getElementById("employeeSelectWrapper");
+
+              checkbox.addEventListener("change", function () {
+                if (this.checked) {
+                  selectWrapper.style.display = "block";
+                } else {
+                  selectWrapper.style.display = "none";
+                }
+              });
+            </script>
+
             <div class="divider-section">
               <div class="divider"></div>
             </div>

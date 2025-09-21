@@ -1,0 +1,5 @@
+ALTER TABLE clearance_status 
+ADD UNIQUE KEY unique_status (student_id, department_id);
+
+ALTER TABLE clearance_requirements 
+ADD UNIQUE KEY unique_requirements (student_id, department_id);
